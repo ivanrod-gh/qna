@@ -1,40 +1,21 @@
 require 'rails_helper'
 
-# feature 'User can show all questions', %q{
-#   In order to get answer from a comminuty
-#   As an authenticated user
-#   I'd like to be able to ask the question
-# } do
-#   given(:user) { create(:user) }
+feature 'User can watch all questions', %q{
+  In order to read questions
+  As an any user
+  I'd like to be able to watch all questions
+} do
+  given!(:questions) do
+    create(:question)
+    create(:question, :another)
+  end
+  
+  scenario 'Any user can watch all questions' do
+    visit questions_path
 
-#   describe 'Authenticated user' do
-#     background do
-#       sign_in(user)
-
-#       click_on 'Ask question'
-#     end
-
-#     scenario 'asks a question' do
-#       fill_in 'Title', with: 'Test question title'
-#       fill_in 'Body', with: 'Test question body'
-#       click_on 'Ask'
-
-#       expect(page).to have_content 'Your question successfully created.'
-#       expect(page).to have_content 'Test question title'
-#       expect(page).to have_content 'Test question body'
-#     end
-
-#     scenario 'asks a question with errors' do
-#       click_on 'Ask'
-
-#       expect(page).to have_content "Title can't be blank"
-#     end
-#   end
-
-#   scenario 'Unauthenticated user tries to ask a question' do
-#     visit questions_path
-#     click_on 'Ask question'
-
-#     expect(page).to have_content 'You need to sign in or sign up before continuing.'
-#   end
-# end
+    expect(page).to have_content attributes_for(:question)[:title]
+    expect(page).to have_content attributes_for(:question)[:body]
+    expect(page).to have_content attributes_for(:question, :another)[:title]
+    expect(page).to have_content attributes_for(:question, :another)[:body]
+  end
+end
