@@ -9,12 +9,22 @@ feature 'User can sign in', %q{
 
   given(:user) { create(:user) }
 
-  scenario 'Registered user tries to sign in' do
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
-    
-    expect(page).to have_content 'Signed in successfully.'
+  describe 'Registered user' do
+    before do
+      fill_in 'Email', with: user.email
+      fill_in 'Password', with: user.password
+      click_on 'Log in'
+    end
+
+    scenario 'tries to sign in' do
+      expect(page).to have_content 'Signed in successfully.'
+    end
+
+    scenario 'tries to sign in again' do
+      visit new_user_session_path
+
+      expect(page).to have_content 'You are already signed in.'
+    end
   end
   
   scenario 'Unregistered user tries to sign in' do
