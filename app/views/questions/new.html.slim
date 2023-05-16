@@ -1,5 +1,7 @@
 p Create New Question
 
+= render 'shared/errors', resource: @question
+
 = form_with model: @question, local: true do |form|
   div
     = form.label :title
@@ -13,7 +15,7 @@ p Create New Question
 
   div
     br
-    = form.submit
+    = form.submit 'Ask'
 
 br
 = link_to 'Back', questions_path, method: :get
