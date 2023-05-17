@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :find_question, only: %i[new create]
 
   def new
@@ -10,7 +11,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     if @answer.save
-      redirect_to answer_path(@answer)
+      redirect_to @question
     else
       render :new
     end
