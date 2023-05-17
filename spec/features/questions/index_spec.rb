@@ -5,11 +5,12 @@ feature 'User can watch all questions', %q{
   As an any user
   I'd like to be able to watch all questions
 } do
+  given(:user) { create(:user) }
   given!(:questions) do
-    questions = []
-    questions.push(create(:question))
-    questions.push(create(:question, :another))
-    questions.push(create(:question, :yet_another))
+    user.questions.create(attributes_for(:question))
+    user.questions.create(attributes_for(:question, :another))
+    user.questions.create(attributes_for(:question, :yet_another))
+    user.questions
   end
   
   scenario 'Any user tries to watch all questions' do

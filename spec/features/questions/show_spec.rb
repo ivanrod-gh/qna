@@ -5,11 +5,13 @@ feature 'User can watch question with answers', %q{
   As an any user
   I'd like to be able to watch questions and it's answers
 } do
-  given(:question) { create(:question) }
+  given(:user) { create(:user) }
+  given(:question) { user.questions.create(attributes_for(:question)) }
   given!(:answers) do
-    question.answers.push(Answer.new(attributes_for(:answer)))
-    question.answers.push(Answer.new(attributes_for(:answer, :another)))
-    question.answers.push(Answer.new(attributes_for(:answer, :yet_another)))
+    question.answers.create(attributes_for(:answer).merge!(user: user))
+    question.answers.create(attributes_for(:answer, :another).merge!(user: user))
+    question.answers.create(attributes_for(:answer, :yet_another).merge!(user: user))
+    question.answers
   end
   
   scenario 'Any user tries to watch question and it\'s answers' do

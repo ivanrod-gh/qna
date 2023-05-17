@@ -6,7 +6,7 @@ feature 'User can create answer', %q{
   I'd like to be able to publicate a question's answer
 } do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given(:question) { user.questions.create(attributes_for(:question)) }
 
   describe 'Authenticated user' do
     background do

@@ -1,11 +1,17 @@
 p = @question.title
 p = @question.body
+p
+  | By: 
+  = @question.user.email
 p = link_to 'Delete the Question', question_path(@question), method: :delete
 p = link_to 'Publicate an Answer', new_question_answer_path(@question), method: :get
 - if @question.answers.present?
   - @question.answers.each do |answer|
       hr
       p = answer.body
+      p
+        | By: 
+        = answer.user.email
       p = link_to 'Delete an Answer', answer_path(answer), method: :delete
 
 hr
