@@ -6,16 +6,18 @@ feature 'User can watch all questions', %q{
   I'd like to be able to watch all questions
 } do
   given!(:questions) do
-    create(:question)
-    create(:question, :another)
+    questions = []
+    questions.push(create(:question))
+    questions.push(create(:question, :another))
+    questions.push(create(:question, :yet_another))
   end
   
-  scenario 'Any user can watch all questions' do
+  scenario 'Any user tries to watch all questions' do
     visit questions_path
 
-    expect(page).to have_content attributes_for(:question)[:title]
-    expect(page).to have_content attributes_for(:question)[:body]
-    expect(page).to have_content attributes_for(:question, :another)[:title]
-    expect(page).to have_content attributes_for(:question, :another)[:body]
+    questions.each do |question|
+      expect(page).to have_content question[:title]
+      expect(page).to have_content question[:body]
+    end
   end
 end

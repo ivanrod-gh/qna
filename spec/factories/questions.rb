@@ -1,15 +1,20 @@
 FactoryBot.define do
   factory :question do
-    title { "MyString" }
-    body { "MyText" }
+    title { "QuestionTitleString" }
+    body { "QuestionBodyText" }
   
     trait :invalid do
       title { nil }
     end
 
     trait :another do
-      title { "AnotherString" }
-      body { "AnotherText" }
+      title { "AnotherQuestionTitleString" }
+      body { "AnotherQuestionBodyText" }
+    end
+
+    trait :yet_another do
+      title { "YetAnotherQuestionTitleString" }
+      body { "YetAnotherQuestionBodyText" }
     end
   end
 end
