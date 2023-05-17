@@ -5,10 +5,11 @@ feature 'User can move from viewing questions list to view current question and 
   As an any user
   I'd like to be able to navigate from questions list to current question and vice versa
 } do
+  given(:user) { create(:user) }
   given!(:questions) do
-    questions = []
-    questions.push(create(:question))
-    questions.push(create(:question, :another))
+    user.questions.create(attributes_for(:question))
+    user.questions.create(attributes_for(:question, :another))
+    user.questions
   end
   
   scenario 'Any user tries to navigate from questions list to current question' do

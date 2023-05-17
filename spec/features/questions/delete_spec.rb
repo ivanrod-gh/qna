@@ -7,11 +7,11 @@ feature 'User can delete his question', %q{
 } do
   given(:user) { create(:user) }
   given!(:questions) do
-    questions = []
-    questions.push(create(:question))
-    questions.push(create(:question, :another))
+    user.questions.create(attributes_for(:question))
+    user.questions.create(attributes_for(:question, :another))
+    user.questions
   end
-  
+
   scenario 'Authenticated user tries to delete a question' do
     sign_in(user)
     visit question_path(questions[0])

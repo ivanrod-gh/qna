@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let(:question) { user.questions.create(attributes_for(:question)) }
 
   describe 'before action' do
     before { login(user) }
@@ -67,15 +67,14 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     before { login(user) }
 
-    let(:question) { create(:question) }
-    let!(:answer) { question.answers.push(Answer.new(attributes_for(:answer))) }
+    let!(:answer) { question.answers.create(attributes_for(:answer).merge!(user: user)) }
 
     it 'delete an answer' do
-      expect{ delete :destroy, params: { id: answer[0] } }.to change(Answer, :count).by(-1)
+      expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
     end
 
     it 'redirect to current question' do
-      delete :destroy, params: { id: answer[0] }
+      delete :destroy, params: { id: answer }
       expect(response).to redirect_to question_path(question)
     end
   end
