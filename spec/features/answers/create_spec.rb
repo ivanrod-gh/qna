@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-feature 'User can create answer', %q{
-  In order to answering communities questions
+feature 'User can create answer at question page', %q{
+  In order to comfortable answering communities questions
   As an authenticated user
-  I'd like to be able to publicate a question's answer
+  I'd like to be able to publicate a question's answer at question's page
 } do
   given(:user) { create(:user) }
   given(:question) { user.questions.create(attributes_for(:question)) }
@@ -13,7 +13,6 @@ feature 'User can create answer', %q{
       sign_in(user)
 
       visit question_path(question)
-      click_on 'Publicate an Answer'
     end
 
     scenario 'create an answer for question' do
@@ -32,8 +31,9 @@ feature 'User can create answer', %q{
   end
 
   scenario 'Unauthenticated user tries to create an answer' do
-      visit question_path(question)
-      click_on 'Publicate an Answer'
+    visit question_path(question)
+
+    click_on 'Answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

@@ -2,7 +2,8 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy]
+  before_action :find_question, only: %i[show edit update destroy]
+  before_action :new_answer, only: :show
 
   def index
     @questions = Question.all
@@ -34,14 +35,22 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if @question.user == current_user
+      @question.destroy
+      redirect_to questions_path
+    else
+      redirect_to questions_path, notice: "You are not be able to perform this action."
+    end
   end
 
   private
 
-  def load_question
+  def find_question
     @question = Question.find(params[:id])
+  end
+
+  def new_answer
+    @answer = Answer.new
   end
 
   def question_params

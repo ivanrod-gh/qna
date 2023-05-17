@@ -1,39 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user) { create(:user) }
-  let(:question) { user.questions.create(attributes_for(:question)) }
-
-  describe 'before action' do
-    before { login(user) }
-
-    it 'find question and assigns it to @question' do
-      get :new, params: { question_id: question }
-      expect(assigns(:question)).to eq Question.find(question.id)
-    end
-  end
-
-  describe 'GET #new' do
-    before { login(user) }
-
-    it 'assign new answer to @answer' do
-      get :new, params: { question_id: question }
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'new answer linked to it\'s question' do
-      get :new, params: { question_id: question }
-      expect(assigns(:answer)).to have_attributes question_id: question.id
-    end
-
-    it 'render new view' do
-      get :new, params: { question_id: question }
-      expect(response).to render_template :new
-    end
-  end
+  let(:users) { create_list(:user, 2) }
+  let(:question) { users[0].questions.create(attributes_for(:question)) }
+  let(:answer) { question.answers.create(attributes_for(:answer).merge!(user: users[0])) }
 
   describe 'POST #create' do
-    before { login(user) }
+    before { login(users[0]) }
 
     context 'with valid attributes' do
       it 'save a new answer in the database' do
@@ -59,23 +32,38 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-render new view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
+    let!(:answer) { question.answers.create(attributes_for(:answer).merge!(user: users[0])) }
 
-    let!(:answer) { question.answers.create(attributes_for(:answer).merge!(user: user)) }
+    describe 'if user logged in as an author of an answer' do
+      before { login(users[0]) }
 
-    it 'delete an answer' do
-      expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      it 'delete an answer' do
+        expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirect to current question' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
     end
 
-    it 'redirect to current question' do
-      delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question_path(question)
+    describe 'if user logged in not as an author of an answer' do
+      before { login(users[1]) }
+
+      it 'does not delete the question' do
+        expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
+      end
+
+      it 'redirect to current question' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
     end
   end
 end

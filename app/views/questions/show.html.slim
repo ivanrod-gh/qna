@@ -3,16 +3,33 @@ p = @question.body
 p
   | By: 
   = @question.user.email
-p = link_to 'Delete the Question', question_path(@question), method: :delete
-p = link_to 'Publicate an Answer', new_question_answer_path(@question), method: :get
+- if @question.user == current_user
+  p = link_to 'Delete the Question', question_path(@question), method: :delete
 - if @question.answers.present?
   - @question.answers.each do |answer|
-      hr
-      p = answer.body
-      p
-        | By: 
-        = answer.user.email
-      p = link_to 'Delete an Answer', answer_path(answer), method: :delete
+      - if answer.persisted?
+        hr
+        p = answer.body
+        p
+          | By: 
+          = answer.user.email
+        - if answer.user == current_user
+          p = link_to 'Delete an Answer', answer_path(answer), method: :delete
+
+hr
+p Publicate your Answer:
+
+= render 'shared/errors', resource: @answer
+
+= form_with model: [@question, @answer], local: true do |form|
+  div
+    = form.label :body
+    br
+    = form.text_area :body, cols: 45, rows: 1
+
+  div
+    br
+    = form.submit 'Answer'
 
 hr
 p = link_to 'Back', questions_path, method: :get
