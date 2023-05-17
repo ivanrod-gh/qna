@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:user) { create(:user) }
   let(:question) { create(:question) }
 
   describe 'before action' do
+    before { login(user) }
+
     it 'find question and assigns it to @question' do
       get :new, params: { question_id: question }
       expect(assigns(:question)).to eq Question.find(question.id)
@@ -11,6 +14,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { login(user) }
+
     it 'assign new answer to @answer' do
       get :new, params: { question_id: question }
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -28,6 +33,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
+
     context 'with valid attributes' do
       it 'save a new answer in the database' do
         expect{
