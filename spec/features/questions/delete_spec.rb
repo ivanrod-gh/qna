@@ -16,7 +16,7 @@ feature 'User can delete his question', %q{
     sign_in(user)
     visit question_path(questions[0])
 
-    click_on 'Delete'
+    click_on 'Delete the Question'
 
     expect(page).not_to have_content questions[0][:title]
     expect(page).not_to have_content questions[0][:body]
@@ -27,8 +27,8 @@ feature 'User can delete his question', %q{
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(questions[0])
 
-    click_on 'Delete'
+    click_on 'Delete the Question'
 
     expect(page).to have_content "You need to sign in or sign up before continuing."
-    end
+  end
 end

@@ -12,7 +12,8 @@ feature 'User can create answer', %q{
     background do
       sign_in(user)
 
-      visit new_question_answer_path(question)
+      visit question_path(question)
+      click_on 'Publicate an Answer'
     end
 
     scenario 'create an answer for question' do
@@ -31,7 +32,8 @@ feature 'User can create answer', %q{
   end
 
   scenario 'Unauthenticated user tries to create an answer' do
-    visit new_question_answer_path(question)
+      visit question_path(question)
+      click_on 'Publicate an Answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
