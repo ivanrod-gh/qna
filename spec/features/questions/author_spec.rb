@@ -6,11 +6,11 @@ feature 'User can be an author of the question', %q{
   I'd like to be an author of the question
 } do
   given(:user) { create(:user) }
-  given(:question) { user.questions.create(attributes_for(:question)) }
+  given(:question) { create(:question, user: user) }
 
   scenario 'Any user checks his authoring of the question' do
     visit question_path(question)
 
-    expect(page).to have_content "By: #{question.user.email}"
+    expect(page).to have_content "By: #{user.email}"
   end
 end

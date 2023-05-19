@@ -1,5 +1,8 @@
 FactoryBot.define do
   factory :answer do
+    user
+    question
+
     body { "BasicAnswerBodyText" }
     
     trait :invalid do
@@ -10,8 +13,8 @@ FactoryBot.define do
       body { "AnotherAnswerBodyText" }
     end
 
-    trait :yet_another do
-      body { "YetAnotherAnswerBodyText" }
+    trait :another_one do
+      body { "AnotherOneAnswerBodyText" }
     end
   end
 end

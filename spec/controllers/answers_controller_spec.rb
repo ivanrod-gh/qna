@@ -1,12 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:users) { create_list(:user, 2) }
-  let(:question) { users[0].questions.create(attributes_for(:question)) }
-  let(:answer) { question.answers.create(attributes_for(:answer).merge!(user: users[0])) }
+  let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, user: user, question: question) }
 
   describe 'POST #create' do
-    before { login(users[0]) }
+    before { login(user) }
+
+    it 'assign the requested question to @question' do
+      post :create, params: { question_id: question, answer: attributes_for(:answer) }
+      expect(assigns(:question)).to eq question
+    end
 
     context 'with valid attributes' do
       it 'save a new answer in the database' do
@@ -38,10 +44,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { question.answers.create(attributes_for(:answer).merge!(user: users[0])) }
+    let!(:answer) { create(:answer, user: user, question: question) }
 
     describe 'if user logged in as an author of an answer' do
-      before { login(users[0]) }
+      before { login(user) }
 
       it 'delete an answer' do
         expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
@@ -54,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     describe 'if user logged in not as an author of an answer' do
-      before { login(users[1]) }
+      before { login(another_user) }
 
       it 'does not delete the question' do
         expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
