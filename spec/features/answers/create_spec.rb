@@ -6,7 +6,7 @@ feature 'User can create answer at question page', %q{
   I'd like to be able to publicate a question's answer at question's page
 } do
   given(:user) { create(:user) }
-  given(:question) { user.questions.create(attributes_for(:question)) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -20,7 +20,9 @@ feature 'User can create answer at question page', %q{
 
       click_on 'Answer'
 
-      expect(page).to have_content attributes_for(:answer)[:body]
+      within '.answers' do
+        expect(page).to have_content attributes_for(:answer)[:body]
+      end
     end
 
     scenario 'create an answer for question with errors' do

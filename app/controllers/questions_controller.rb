@@ -3,13 +3,14 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[show edit update destroy]
-  before_action :new_answer, only: :show
 
   def index
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = Answer.new
+  end
 
   def new
     @question = Question.new
@@ -47,10 +48,6 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.find(params[:id])
-  end
-
-  def new_answer
-    @answer = Answer.new
   end
 
   def question_params

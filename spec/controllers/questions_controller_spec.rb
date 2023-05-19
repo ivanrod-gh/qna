@@ -1,13 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:users) { create_list(:user, 2) }
-  let(:question) { users[0].questions.create(attributes_for(:question)) }
+  let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     let!(:questions) do
-      5.times { users[0].questions.create(attributes_for(:question)) }
-      users[0].questions
+      5.times { create(:question, user: user) }
+      user.questions
     end
     before { get :index }
 
@@ -26,6 +27,10 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assign the requested question to @question' do
       expect(assigns(:question)).to eq question
     end
+
+    it 'assign new Answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
     
     it 'render show view' do
       expect(response).to render_template :show
@@ -33,7 +38,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before { login(users[0]) }
+    before { login(user) }
 
     before { get :new }
     
@@ -47,7 +52,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before { login(users[0]) }
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'saves a new question in the database' do
@@ -73,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    before { login(users[0]) }
+    before { login(user) }
 
     before { get :edit, params: { id: question } }
 
@@ -87,7 +92,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(users[0]) }
+    before { login(user) }
 
     context 'with valid attributes' do
       before { patch :update, params: { id: question, question: attributes_for(:question, :another) }}
@@ -126,10 +131,10 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
 
-    let!(:question) { users[0].questions.create(attributes_for(:question)) }
+    let!(:question) { create(:question, user: user) }
 
     describe 'if user logged in as an author of the question' do
-      before { login(users[0]) }
+      before { login(user) }
 
       it 'delete the question' do
         expect{ delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
@@ -142,7 +147,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     describe 'if user logged in not as an author of the question' do
-      before { login(users[1]) }
+      before { login(another_user) }
 
       it 'does not delete the question' do
         expect{ delete :destroy, params: { id: question } }.to change(Question, :count).by(0)

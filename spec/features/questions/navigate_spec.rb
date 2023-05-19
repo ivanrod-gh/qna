@@ -5,31 +5,28 @@ feature 'User can move from viewing questions list to view current question and 
   As an any user
   I'd like to be able to navigate from questions list to current question and vice versa
 } do
-  given(:user) { create(:user) }
-  given!(:questions) do
-    user.questions.create(attributes_for(:question))
-    user.questions.create(attributes_for(:question, :another))
-    user.questions
-  end
+  given!(:question) { create(:question) }
+  given!(:another_question) { create(:question, :another) }
   
   scenario 'Any user tries to navigate from questions list to current question' do
     visit questions_path
-    find("a[href='#{question_path(questions[0])}']").click
 
-    expect(page).to have_content questions[0][:title]
-    expect(page).to have_content questions[0][:body]
-    expect(page).not_to have_content questions[1][:title]
-    expect(page).not_to have_content questions[1][:body]
+    find("a[href='#{question_path(question)}']").click
+
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).not_to have_content another_question.title
+    expect(page).not_to have_content another_question.body
   end
 
   scenario 'Any user tries to navigate from current question to questions list' do
-    visit question_path(questions[0])
+    visit question_path(question)
 
     click_on 'Back'
 
-    expect(page).to have_content questions[0][:title]
-    expect(page).to have_content questions[0][:body]
-    expect(page).to have_content questions[1][:title]
-    expect(page).to have_content questions[1][:body]
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content another_question.title
+    expect(page).to have_content another_question.body
   end
 end

@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :question do
+    user
+
     title { "BasicQuestionTitleString" }
     body { "BasicQuestionBodyText" }
   
@@ -12,9 +14,9 @@ FactoryBot.define do
       body { "AnotherQuestionBodyText" }
     end
 
-    trait :yet_another do
-      title { "YetAnotherQuestionTitleString" }
-      body { "YetAnotherQuestionBodyText" }
+    trait :another_one do
+      title { "AnotherOneQuestionTitleString" }
+      body { "AnotherOneQuestionBodyText" }
     end
   end
 end
