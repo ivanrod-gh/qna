@@ -10,7 +10,7 @@ RSpec.describe AnswersController, type: :controller do
     before { login(user) }
 
     it 'assign the requested question to @question' do
-      post :create, params: { question_id: question, answer: attributes_for(:answer) }
+      post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
       expect(assigns(:question)).to eq question
     end
 
@@ -18,13 +18,14 @@ RSpec.describe AnswersController, type: :controller do
       it 'save a new answer in the database' do
         expect{
           post :create,
-          params: { question_id: question, answer: attributes_for(:answer) }
+          params: { question_id: question, answer: attributes_for(:answer) },
+          format: :js
         }.to change(Answer, :count).by(1)
       end
 
-      it 'redirect to show view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question
+      it 'render errors with JS template create' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :create
       end
     end
 
@@ -32,13 +33,45 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save a new answer in the database' do
         expect{
           post :create,
-          params: { question_id: question, answer: attributes_for(:answer, :invalid) }
+          params: { question_id: question, answer: attributes_for(:answer, :invalid) },
+          format: :js
         }.not_to change(Answer, :count)
       end
 
-      it 're-render new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template 'questions/show'
+      it 'render errors with JS template create' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :create
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+        answer.reload
+        expect(answer.body).to eq attributes_for(:answer, :another)[:body]
+      end
+      
+      it 'render errors with JS template update' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+    
+    context 'with invalid attributes' do
+      it 'does not change answer attributes' do
+        expect do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+          answer.reload
+        end.to_not change(answer, :body)
+      end
+    
+      it 'render errors with JS template update' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+        expect(response).to render_template :update
       end
     end
   end
