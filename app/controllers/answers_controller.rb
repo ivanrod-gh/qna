@@ -5,11 +5,16 @@ class AnswersController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params.merge!(user: current_user))
-    if @answer.save
-      redirect_to @question
+    @answer = @question.answers.create(answer_params.merge!(user: current_user))
+  end
+
+  def update
+    @answer = Answer.find(params[:id])
+    if @answer.user == current_user
+      @answer.update(answer_params)
+      @question = @answer.question
     else
-      render 'questions/show'
+      redirect_to question_path(@answer.question), notice: "You are not be able to perform this action."
     end
   end
 

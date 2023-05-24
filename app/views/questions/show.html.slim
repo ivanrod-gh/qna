@@ -5,29 +5,20 @@ p
   = @question.user.email
 - if @question.user == current_user
   p = link_to 'Delete the Question', question_path(@question), method: :delete
-- if @question.answers.present?
-  div.answers
-    - @question.answers.each do |answer|
-        - if answer.persisted?
-          hr
-          p = answer.body
-          p
-            | By: 
-            = answer.user.email
-          - if answer.user == current_user
-            p = link_to 'Delete an Answer', answer_path(answer), method: :delete
+div.answers
+  = render @question.answers
 
 hr
 p Publicate your Answer:
 
-= render 'shared/errors', resource: @answer
+div.answer-errors
+  = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @answer], local: true do |form|
+= form_with model: [@question, @answer], local: false do |form|
   div
     = form.label :body
     br
-    = form.text_area :body, cols: 45, rows: 1
-
+    = form.text_area :body, cols: 45, rows: 1, class: 'new-answer'
   div
     br
     = form.submit 'Answer'
