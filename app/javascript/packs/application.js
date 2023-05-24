@@ -16,3 +16,4 @@ import "@popperjs/core"
 import "bootstrap"
 
 import "packs/utilities/answers.js"
+import "packs/utilities/question.js"

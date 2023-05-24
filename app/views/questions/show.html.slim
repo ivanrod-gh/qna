@@ -1,12 +1,11 @@
-p = @question.title
-p = @question.body
-p
-  | By: 
-  = @question.user.email
-- if @question.user == current_user
-  p = link_to 'Delete the Question', question_path(@question), method: :delete
+div.question
+  div[id = "question"]
+    = render @question
+
 div.answers
-  = render @question.answers
+  - @question.answers.each do |answer|
+    div[id = "answer-#{answer.id}"]
+      = render answer
 
 hr
 p Publicate your Answer:
