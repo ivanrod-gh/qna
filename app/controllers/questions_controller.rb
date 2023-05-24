@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show edit update destroy]
+  before_action :find_question, only: %i[show update destroy]
 
   def index
     @questions = Question.all
@@ -25,13 +25,11 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit; end
-
   def update
-    if @question.update(question_params)
-      redirect_to @question
+    if @question.user == current_user
+        @question.update(question_params)
     else
-      render :edit
+      redirect_to question_path(@question), notice: "You are not be able to perform this action."
     end
   end
 

@@ -13,7 +13,7 @@ feature 'User can edit his answer', %q{
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question)
     
-    expect(page).to_not have_link 'Edit'
+    expect(page).to_not have_link 'Edit an Answer'
   end
   
   describe 'Authenticated user', js: true do
@@ -53,7 +53,7 @@ feature 'User can edit his answer', %q{
       end
     end
 
-    scenario 'tries to edit another user\'s question' do
+    scenario 'tries to edit another user\'s answer' do
       sign_in(another_user)
       visit question_path(question)
 
@@ -63,15 +63,14 @@ feature 'User can edit his answer', %q{
         expect(page).to_not have_selector 'textarea'
       end
     end
+  end
 
-    scenario 'Unauthenticated user tries to edit question' do
-      visit question_path(question)
+  scenario 'Unauthenticated user tries to edit answer' do
+    visit question_path(question)
 
-      within '.answers' do
-        wait_for_ajax
-        expect(page).to_not have_content 'Edit an Answer'
-        expect(page).to_not have_selector 'textarea'
-      end
+    within '.answers' do
+      expect(page).to_not have_content 'Edit an Answer'
+      expect(page).to_not have_selector 'textarea'
     end
   end
 end
