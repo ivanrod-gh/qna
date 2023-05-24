@@ -22,7 +22,6 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:id])
     if @answer.user == current_user
       @answer.destroy
-      redirect_to question_path(@answer.question)
     else
       redirect_to question_path(@answer.question), notice: "You are not be able to perform this action."
     end

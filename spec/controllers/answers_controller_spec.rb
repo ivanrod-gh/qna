@@ -16,14 +16,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'save a new answer in the database' do
-        expect{
+        expect do
           post :create,
           params: { question_id: question, answer: attributes_for(:answer) },
           format: :js
-        }.to change(Answer, :count).by(1)
+        end.to change(Answer, :count).by(1)
       end
 
-      it 'render errors with JS template create' do
+      it 'render errors with JS create' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(response).to render_template :create
       end
@@ -31,14 +31,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save a new answer in the database' do
-        expect{
+        expect do
           post :create,
           params: { question_id: question, answer: attributes_for(:answer, :invalid) },
           format: :js
-        }.not_to change(Answer, :count)
+        end.not_to change(Answer, :count)
       end
 
-      it 'render errors with JS template create' do
+      it 'render errors with JS create' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :create
       end
@@ -46,32 +46,50 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    describe 'if user logged in as an author of an answer and tries to change an answer' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'changes answer attributes' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
-        answer.reload
-        expect(answer.body).to eq attributes_for(:answer, :another)[:body]
+      context 'with valid attributes' do
+        it 'changes answer attributes' do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+          answer.reload
+          expect(answer.body).to eq attributes_for(:answer, :another)[:body]
+        end
+        
+        it 'updates an answer with JS update' do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+          expect(response).to render_template :update
+        end
       end
       
-      it 'render errors with JS template update' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
-        expect(response).to render_template :update
+      context 'with invalid attributes' do
+        it 'does not change answer attributes' do
+          expect do
+            patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+            answer.reload
+          end.to_not change(answer, :body)
+        end
+      
+        it 'render errors with JS update' do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
+          expect(response).to render_template :update
+        end
       end
     end
-    
-    context 'with invalid attributes' do
+
+    describe 'if user logged in not as an author of an answer and tries to change an answer' do
+      before { login(another_user) }
+
       it 'does not change answer attributes' do
         expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+          patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
           answer.reload
         end.to_not change(answer, :body)
       end
     
-      it 'render errors with JS template update' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :another) }, format: :js
-        expect(response).to render_template :update
+      it 'redirect to current question' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
@@ -83,12 +101,12 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'delete an answer' do
-        expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect{ delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect to current question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'deletes an answer from page with JS destroy' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
