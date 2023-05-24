@@ -21,7 +21,7 @@ feature 'User can edit his answer', %q{
       sign_in(user)
       visit question_path(question)
 
-      within '.answers' do            # если не применить, то будет ошибка "Ambiguous match" из-за двух полей ввода
+      within '.answers' do
         click_on 'Edit an Answer'
 
         fill_in 'Edit your answer', with: attributes_for(:answer, :another)[:body]

@@ -10,12 +10,13 @@ feature 'User can delete his answer', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, user: user, question: question) }
 
-  scenario 'Authenticated user tries to delete his answer' do
+  scenario 'Authenticated user tries to delete his answer', js: true do
     sign_in(user)
     visit question_path(question)
 
     find("a[href='#{answer_path(answer)}']").click
 
+    wait_for_ajax
     expect(page).to have_content question[:title]
     expect(page).to have_content question[:body]
     expect(page).not_to have_content answer[:body]
