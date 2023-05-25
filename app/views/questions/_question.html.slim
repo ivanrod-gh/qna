@@ -1,21 +1,22 @@
-p = @question.title
-p = @question.body
-p
-  | By: 
-  = @question.user.email
-- if @question.user == current_user
-  p = link_to 'Delete the Question', question_path(@question), method: :delete
-  p = link_to 'Edit the Question', '#', class: "edit-question-link", data: { question_id: @question.id }
-  div[id = "question-errors"]
-  = form_with model: @question, class: "hide", id: "edit-question", local: false do |form|
-    div
-      = form.label :title, 'Edit question\'s title'
-      br
-      = form.text_area :title, cols: 45, rows: 1
-    div
-      = form.label :body, 'Edit question\'s body'
-      br
-      = form.text_area :body, cols: 45, rows: 1
-    div
-      br
-      = form.submit 'Update'
+div[id = "question"]
+  p = @question.title
+  p = @question.body
+  p
+    | By: 
+    = @question.user.email
+  - if @question.user == current_user
+    p = link_to 'Edit the Question', '#', class: "edit-question-link", data: { question_id: @question.id }
+    p = link_to 'Delete the Question', question_path(@question), method: :delete
+    div[id = "question-errors"]
+    = form_with model: @question, class: "hide", id: "edit-question", local: false do |form|
+      div
+        = form.label :title, 'Edit question\'s title'
+        br
+        = form.text_area :title, cols: 45, rows: 1
+      div
+        = form.label :body, 'Edit question\'s body'
+        br
+        = form.text_area :body, cols: 45, rows: 1
+      div
+        br
+        = form.submit 'Update'

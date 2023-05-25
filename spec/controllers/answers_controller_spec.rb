@@ -123,4 +123,44 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'POST #best_mark' do
+    describe 'if user logged in as an author of an question' do
+      before { login(user) }
+
+      let(:another_answer) { create(:answer, :another, user: user, question: question) }
+
+      it 'mark answer as the best answer' do
+        expect do
+          post :best_mark, params: { id: answer }, format: :js
+          answer.reload
+        end.to change(answer, :best).from(false).to(true)
+      end
+
+      it 'new best marked answer will set old best answer to not be a best answer' do
+        post :best_mark, params: { id: another_answer }, format: :js
+        another_answer.reload
+        expect do
+          post :best_mark, params: { id: answer }, format: :js
+          another_answer.reload
+        end.to change(another_answer, :best).from(true).to(false)
+      end
+    end
+
+    describe 'if user logged in not as an author of an question' do
+      before { login(another_user) }
+
+      it 'does not change answer best field' do
+        expect do
+          post :best_mark, params: { id: answer }
+          answer.reload
+        end.not_to change(answer, :best)
+      end
+
+      it 'redirect to current question' do
+        post :best_mark, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
 end
