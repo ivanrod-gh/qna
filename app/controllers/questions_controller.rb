@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.user == current_user
-        @question.update(question_params)
+      @question.update(question_params)
     else
       redirect_to question_path(@question), notice: "You are not be able to perform this action."
     end

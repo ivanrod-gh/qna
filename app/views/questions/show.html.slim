@@ -1,11 +1,9 @@
 div.question
-  div[id = "question"]
-    = render @question
+  = render @question
 
 div.answers
-  - @question.answers.each do |answer|
-    div[id = "answer-#{answer.id}"]
-      = render answer
+  - @question.sorted_answers.each do |answer|
+    = render answer
 
 hr
 p Publicate your Answer:

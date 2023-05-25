@@ -1,0 +1,5 @@
+- if answer.best?
+  p
+    | *Best answer*
+- elsif answer.question.user == current_user
+    p = link_to 'Mark as best', best_mark_answer_path(answer), method: :post, remote: true

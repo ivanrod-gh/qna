@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions, shallow: true do
-    resources :answers, shallow: true
+    resources :answers, shallow: true do
+      member do
+        post :best_mark
+      end
+    end
   end
 end
