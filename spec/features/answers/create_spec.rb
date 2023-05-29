@@ -25,6 +25,19 @@ feature 'User can create answer at question page', %q{
       end
     end
 
+    scenario 'create an answer with attached files' do
+      fill_in 'Body', with: 'Test question body'
+
+      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      
+      click_on 'Answer'
+
+      within '.answers' do
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
     scenario 'create an answer for question with errors' do
       click_on 'Answer'
 

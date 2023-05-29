@@ -17,6 +17,10 @@ div.answer-errors
     br
     = form.text_area :body, cols: 45, rows: 1, class: 'new-answer'
   div
+    = form.label :files
+    br
+    = form.file_field :files, multiple: true
+  div
     br
     = form.submit 'Answer'
 
