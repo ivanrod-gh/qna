@@ -19,9 +19,8 @@ module Qna
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # Remove ActionMailbox and ActiveStorage from routes
-    initializer(:remove_action_mailbox_and_activestorage_routes, after: :add_routing_paths) { |app|
-      app.routes_reloader.paths.delete_if {|path| path =~ /activestorage/}
+    # Remove ActionMailbox from routes
+    initializer(:remove_action_mailbox_routes, after: :add_routing_paths) { |app|
       app.routes_reloader.paths.delete_if {|path| path =~ /actionmailbox/ }
     }
 
