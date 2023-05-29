@@ -69,6 +69,10 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :selenium_chrome_headless
   Capybara.default_max_wait_time = 5
   config.include WaitForAjax, type: :feature
+
+  config.after(:all) do
+    FileUtils.rm_rf("#{Rails.root}/tmp/storage", secure: true)
+  end
 end
 
 Shoulda::Matchers.configure do |config|
