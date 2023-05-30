@@ -19,5 +19,9 @@ div[id = "answer-#{answer.id}"]
         br
         = form.text_area :body, cols: 45, rows: 1
       div
+        = form.label :files
+        br
+        = form.file_field :files, multiple: true
+      div
         br
         = form.submit 'Save'
