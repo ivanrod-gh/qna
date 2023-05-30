@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can delete his questions attached file', %q{
   In order to delete an unnecessary (expired) question's attached file
   As an authenticated user
-  I'd like to be able to delete a my question's attached file
+  I'd like to be able to delete my question's attached file
 } do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }

@@ -49,7 +49,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
       describe 'and user logged in not as an author of the answer' do
         before { login(another_user) }
-        
+
         it 'does not delete the attachment' do
           expect do
             delete :destroy, params: { id: answer_with_attach.files.first }, format: :js

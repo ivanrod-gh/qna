@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can delete his answer', %q{
   In order to delete a wrong (incorrect) answer
   As an authenticated user
-  I'd like to be able to delete a answer
+  I'd like to be able to delete my answer
 } do
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
