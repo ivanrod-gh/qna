@@ -3,7 +3,10 @@ div[id = "answer-#{answer.id}"]
   p = answer.body
   - if answer.files.attached?
     - answer.files.each do |file|
-      p = link_to file.filename.to_s, url_for(file)
+      div[id = "attachment-#{file.id}"]
+        p = link_to file.filename.to_s, url_for(file)
+        - if answer.user == current_user
+          p = link_to 'Delete attached file', attachment_path(file), method: :delete, remote: true
   p
     | By: 
     = answer.user.email

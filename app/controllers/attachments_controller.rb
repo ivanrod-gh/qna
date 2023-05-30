@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
-  
+
   def destroy
     @attachment = ActiveStorage::Attachment.find(params[:id])
     @resource = Object.const_get(ActiveStorage::Attachment.last.record_type)
