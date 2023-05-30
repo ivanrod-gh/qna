@@ -28,12 +28,12 @@ feature 'User can create question', %q{
       fill_in 'Title', with: 'Test question title'
       fill_in 'Body', with: 'Test question body'
 
-      attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      attach_file 'Files', ["#{Rails.root}/spec/files/file1.txt", "#{Rails.root}/spec/files/file2.txt"]
       
       click_on 'Ask'
 
-      expect(page).to have_link 'rails_helper.rb'
-      expect(page).to have_link 'spec_helper.rb'
+      expect(page).to have_link 'file1.txt'
+      expect(page).to have_link 'file2.txt'
     end
 
     scenario 'asks a question with errors' do

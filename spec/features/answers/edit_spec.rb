@@ -35,6 +35,24 @@ feature 'User can edit his answer', %q{
       end
     end
 
+    scenario 'edits his answer to attach a files' do
+      sign_in(user)
+      visit question_path(question)
+
+      within '.answers' do
+        click_on 'Edit an Answer'
+
+        attach_file 'Files', ["#{Rails.root}/spec/files/file1.txt", "#{Rails.root}/spec/files/file2.txt"]
+
+        click_on 'Save'
+
+        wait_for_ajax
+        expect(page).to have_link 'file1.txt'
+        expect(page).to have_link 'file2.txt'
+        expect(page).to_not have_selector 'textarea'
+      end
+    end
+
     scenario 'edits his answer with errors' do
       sign_in(user)
       visit question_path(question)

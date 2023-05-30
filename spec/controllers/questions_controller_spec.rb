@@ -127,7 +127,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-
     let!(:question) { create(:question, user: user) }
 
     describe 'if user logged in as an author of the question' do
