@@ -32,6 +32,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails', '~> 3.6.0'
 # Authentication
 gem 'devise', '~> 4.0'
+# UI - Icons
+gem 'octokit', '~> 5.0'
+gem 'octicons_helper', '~> 18.2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -49,6 +52,7 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'aws-sdk-s3', '~> 1'
 end
 
 group :test do
@@ -62,7 +66,6 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
-  gem 'aws-sdk-s3', '~> 1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -8,14 +8,14 @@ feature 'User can delete his answers attached file', %q{
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answer_with_two_attaches) { create(:answer, :with_two_attaches, user: user, question: question) }
+  given!(:answer_with_two_attached_files) { create(:answer, :with_two_attached_files, user: user, question: question) }
 
   scenario 'Authenticated user tries to delete one of his answer\'s attached files', js: true do
     sign_in(user)
     visit question_path(question)
 
     within '.answers' do
-      find("a[href='#{attachment_path(answer_with_two_attaches.files.last)}']").click
+      find("a[href='#{attachment_path(answer_with_two_attached_files.files.last)}']").click
 
       wait_for_ajax
       expect(page).to have_content 'file1.txt'
@@ -28,7 +28,8 @@ feature 'User can delete his answers attached file', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).not_to have_content 'Delete attached file'
+      expect(page).not_to have_link href: "#{attachment_path(answer_with_two_attached_files.files.first)}"
+      expect(page).not_to have_link href: "#{attachment_path(answer_with_two_attached_files.files.last)}"
     end
   end
 
@@ -36,7 +37,8 @@ feature 'User can delete his answers attached file', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).not_to have_content 'Delete attached file'
+      expect(page).not_to have_link href: "#{attachment_path(answer_with_two_attached_files.files.first)}"
+      expect(page).not_to have_link href: "#{attachment_path(answer_with_two_attached_files.files.last)}"
     end
   end
 end

@@ -1,4 +1,6 @@
 document.addEventListener('turbolinks:load', function() {
+  if (!document.querySelector('.page-mark.question-show-js')) return
+
   document.querySelector('.question').addEventListener('click', showQuestionEditForm)
 })
 

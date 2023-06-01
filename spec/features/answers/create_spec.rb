@@ -48,7 +48,9 @@ feature 'User can create answer at question page', %q{
   scenario 'Unauthenticated user tries to create an answer' do
     visit question_path(question)
 
-    click_on 'Answer'
+    within '.new-answer' do
+      click_on 'Answer'
+    end
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

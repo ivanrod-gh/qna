@@ -1,3 +1,5 @@
+span[class="page-mark question-show-js"]
+
 div.question
   = render @question
 
@@ -11,18 +13,11 @@ p Publicate your Answer:
 div.answer-errors
   = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @answer], local: false do |form|
-  div
-    = form.label :body
-    br
-    = form.text_area :body, cols: 45, rows: 1, class: 'new-answer'
-  div
-    = form.label :files
-    br
-    = form.file_field :files, multiple: true, direct_upload: true
-  div
-    br
-    = form.submit 'Answer'
+- new_answer_form = render 'new_answer', question: @question, answer: @answer
+div.new-answer
+  = new_answer_form
+div[class="hide blank-new-answer"]
+  = new_answer_form
 
 hr
 p = link_to 'Back', questions_path, method: :get
