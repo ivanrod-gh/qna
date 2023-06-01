@@ -1,12 +1,22 @@
 div[id = "question"]
   p = @question.title
   p = @question.body
+  - if @question.links.present?
+    - @question.links.each do |link|
+      div[id = "link-#{link.id}"]
+        p
+          = link_to link.name, link.url
+          - if @question.user == current_user
+            |  
+            = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
   - if @question.files.attached?
     - @question.files.each do |file|
       div[id = "attachment-#{file.id}"]
-        p = link_to file.filename.to_s, url_for(file)
-        - if @question.user == current_user
-          p = link_to 'Delete attached file', attachment_path(file), method: :delete, remote: true
+        p
+          = link_to file.filename.to_s, url_for(file)
+          - if @question.user == current_user
+            |  
+            = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
   p
     | By: 
     = @question.user.email

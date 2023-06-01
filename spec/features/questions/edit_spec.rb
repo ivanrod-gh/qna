@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User can edit his question', %q{
   In order to correct mistakes
-  As un author of question
+  As an author of the question
   I'd like to be able to edit my question
 } do
   given(:user) { create(:user) }

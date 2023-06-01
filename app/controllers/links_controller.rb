@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class AttachmentsController < ApplicationController
+class LinksController < ApplicationController
   before_action :authenticate_user!
 
   def destroy
-    @attachment = ActiveStorage::Attachment.find(params[:id])
-    @resource = @attachment.record
+    @link = Link.find(params[:id])
+    @resource = @link.linkable
     if @resource.user == current_user
-      @attachment.purge
+      @link.destroy
     else
       redirect_to questions_path, notice: "You are not be able to perform this action."
     end

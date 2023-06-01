@@ -11,5 +11,6 @@ Rails.application.routes.draw do
     end
   end
 
-  delete '/attachments/:id', to: 'attachments#destroy', as: 'attachment'
+  resources :attachments, only: :destroy
+  resources :links, only: :destroy
 end
