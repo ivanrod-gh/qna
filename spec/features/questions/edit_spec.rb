@@ -12,7 +12,7 @@ feature 'User can edit his question', %q{
   scenario 'Unauthenticated user can not edit question' do
     visit question_path(question)
     
-    expect(page).to_not have_link 'Edit the Question'
+    expect(page).not_to have_link 'Edit the Question'
   end
   
   describe 'Authenticated user', js: true do
@@ -29,10 +29,10 @@ feature 'User can edit his question', %q{
         click_on 'Update'
 
         wait_for_ajax
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.body
+        expect(page).not_to have_content question.title
+        expect(page).not_to have_content question.body
         expect(page).to have_content attributes_for(:question, :another)[:body]
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_selector 'textarea'
       end
     end
 
@@ -50,7 +50,7 @@ feature 'User can edit his question', %q{
         wait_for_ajax
         expect(page).to have_link 'file1.txt'
         expect(page).to have_link 'file2.txt'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_selector 'textarea'
       end
     end
 
@@ -81,8 +81,8 @@ feature 'User can edit his question', %q{
 
       within '.question' do
         wait_for_ajax
-        expect(page).to_not have_content 'Edit the Question'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_content 'Edit the Question'
+        expect(page).not_to have_selector 'textarea'
       end
     end
   end
@@ -91,8 +91,8 @@ feature 'User can edit his question', %q{
     visit question_path(question)
 
     within '.question' do
-      expect(page).to_not have_content 'Edit an Answer'
-      expect(page).to_not have_selector 'textarea'
+      expect(page).not_to have_content 'Edit an Answer'
+      expect(page).not_to have_selector 'textarea'
     end
   end
 end

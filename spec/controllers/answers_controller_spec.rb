@@ -67,7 +67,7 @@ RSpec.describe AnswersController, type: :controller do
           expect do
             patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
             answer.reload
-          end.to_not change(answer, :body)
+          end.not_to change(answer, :body)
         end
       
         it 'render errors with JS update' do
@@ -84,7 +84,7 @@ RSpec.describe AnswersController, type: :controller do
         expect do
           patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
           answer.reload
-        end.to_not change(answer, :body)
+        end.not_to change(answer, :body)
       end
     
       it 'redirect to current question' do

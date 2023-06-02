@@ -2,34 +2,28 @@ p Create New Question
 
 = render 'shared/errors', resource: @question
 
-= form_with model: @question, local: true do |form|
+= form_with model: @question, local: true do |f|
   div
-    = form.label :title
+    = f.label :title
     br
-    = form.text_area :title, cols: 45, rows: 1
+    = f.text_area :title, cols: 45, rows: 1
   div
-    = form.label :body
+    = f.label :body
     br
-    = form.text_area :body, cols: 45, rows: 1
+    = f.text_area :body, cols: 45, rows: 1
   div
-    = form.label :files
+    = f.label :files
     br
-    = form.file_field :files, multiple: true, direct_upload: true
+    = f.file_field :files, multiple: true, direct_upload: true
   p Links:
   p
-    = form.fields_for :links do |link|
-      div
-        = link.label :name, 'Link name'
-        br
-        = link.text_field :name
-      div
-        = link.label :url
-        br
-        = link.text_field :url
-
+    = f.fields_for :links do |link|
+      = render 'questions/link_fields', f: link
+    div
+      = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
   div
     br
-    = form.submit 'Ask'
+    = f.submit 'Ask'
 
 br
 = link_to 'Back', questions_path, method: :get

@@ -8,16 +8,20 @@ div.answers
     = render answer
 
 hr
-p Publicate your Answer:
+- if current_user
+  p Publicate your Answer:
 
-div.answer-errors
-  = render 'shared/errors', resource: @answer
+  div.answer-errors
+    = render 'shared/errors', resource: @answer
 
-- new_answer_form = render 'new_answer', question: @question, answer: @answer
-div.new-answer
-  = new_answer_form
-div[class="hide blank-new-answer"]
-  = new_answer_form
+  - new_answer_form = render 'new_answer', question: @question, answer: @answer
+  div.new-answer
+    = new_answer_form
+  div[class="hide blank-new-answer"]
+    = new_answer_form
+- else
+  | In order to publicate your answers please 
+  = link_to 'sign in', new_user_session_path
 
 hr
 p = link_to 'Back', questions_path, method: :get

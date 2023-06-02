@@ -35,6 +35,8 @@ gem 'devise', '~> 4.0'
 # UI - Icons
 gem 'octokit', '~> 5.0'
 gem 'octicons_helper', '~> 18.2.0'
+# UI - dinamic add/edit/destroy resources
+gem 'cocoon', '1.2.14'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -13,7 +13,7 @@ feature 'User can edit his answer', %q{
   scenario 'Unauthenticated user can not edit answer' do
     visit question_path(question)
     
-    expect(page).to_not have_link 'Edit an Answer'
+    expect(page).not_to have_link 'Edit an Answer'
   end
   
   describe 'Authenticated user', js: true do
@@ -29,9 +29,9 @@ feature 'User can edit his answer', %q{
         click_on 'Save'
 
         wait_for_ajax
-        expect(page).to_not have_content answer.body
+        expect(page).not_to have_content answer.body
         expect(page).to have_content attributes_for(:answer, :another)[:body]
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_selector 'textarea'
       end
     end
 
@@ -49,7 +49,7 @@ feature 'User can edit his answer', %q{
         wait_for_ajax
         expect(page).to have_link 'file1.txt'
         expect(page).to have_link 'file2.txt'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_selector 'textarea'
       end
     end
 
@@ -77,8 +77,8 @@ feature 'User can edit his answer', %q{
 
       within '.answers' do
         wait_for_ajax
-        expect(page).to_not have_content 'Edit an Answer'
-        expect(page).to_not have_selector 'textarea'
+        expect(page).not_to have_content 'Edit an Answer'
+        expect(page).not_to have_selector 'textarea'
       end
     end
   end
@@ -87,8 +87,8 @@ feature 'User can edit his answer', %q{
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_content 'Edit an Answer'
-      expect(page).to_not have_selector 'textarea'
+      expect(page).not_to have_content 'Edit an Answer'
+      expect(page).not_to have_selector 'textarea'
     end
   end
 end
