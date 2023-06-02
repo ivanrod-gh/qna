@@ -103,7 +103,7 @@ RSpec.describe QuestionsController, type: :controller do
           expect do
             patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
             question.reload
-          end.to_not change(question, :body)
+          end.not_to change(question, :body)
         end
       
         it 'render errors with JS update' do
@@ -120,7 +120,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect do
           patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
           question.reload
-        end.to_not change(question, :body)
+        end.not_to change(question, :body)
       end
     
       it 'redirect\'s to this question' do

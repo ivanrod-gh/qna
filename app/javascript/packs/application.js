@@ -14,6 +14,7 @@ ActiveStorage.start()
 
 import "@popperjs/core"
 import "bootstrap"
+import "@nathanvda/cocoon"
 
 import "packs/utilities/answers.js"
 import "packs/utilities/question.js"

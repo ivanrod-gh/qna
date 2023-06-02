@@ -9,16 +9,35 @@ feature 'User can delete his questions attached link', %q{
   given(:another_user) { create(:user) }
   given(:question_with_two_attached_links) { create(:question, :with_two_attached_links, user: user) }
 
-  scenario 'Authenticated user tries to delete one of his question\'s attached links', js: true do
-    sign_in(user)
-    visit question_path(question_with_two_attached_links)
+  describe 'Authenticated user tries to delete one of his question\'s attached links', js: true do
+    background do
+      sign_in(user)
 
-    within '.question' do
-      find("a[href='#{link_path(question_with_two_attached_links.links.last)}']").click
+      visit question_path(question_with_two_attached_links)
+    end
 
-      wait_for_ajax
-      expect(page).to have_link href: 'https://ya.ru/'
-      expect(page).not_to have_link href: 'https://2ip.ru/'
+    scenario 'without editing the question' do
+      within '.question' do
+        find("a[href='#{link_path(question_with_two_attached_links.links.last)}']").click
+
+        wait_for_ajax
+        expect(page).to have_link href: 'https://ya.ru/'
+        expect(page).not_to have_link href: 'https://2ip.ru/'
+      end
+    end
+
+    scenario 'then edit the question' do
+      within '.question' do
+        click_on 'Edit the Question'
+
+        all('.remove_fields.existing').first.click
+
+        click_on 'Update'
+
+        wait_for_ajax
+        expect(page).to have_link href: 'https://ya.ru/'
+        expect(page).not_to have_link href: 'https://2ip.ru/'
+      end
     end
   end
 
@@ -29,6 +48,7 @@ feature 'User can delete his questions attached link', %q{
     within '.question' do
       expect(page).not_to have_link href: "#{link_path(question_with_two_attached_links.links.first)}"
       expect(page).not_to have_link href: "#{link_path(question_with_two_attached_links.links.last)}"
+      expect(page).not_to have_content 'Edit the Question'
     end
   end
 
@@ -38,6 +58,7 @@ feature 'User can delete his questions attached link', %q{
     within '.question' do
       expect(page).not_to have_link href: "#{link_path(question_with_two_attached_links.links.first)}"
       expect(page).not_to have_link href: "#{link_path(question_with_two_attached_links.links.last)}"
+      expect(page).not_to have_content 'Edit the Question'
     end
   end
 end

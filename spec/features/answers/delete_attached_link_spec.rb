@@ -10,16 +10,35 @@ feature 'User can delete his answers attached link', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer_with_two_attached_links) { create(:answer, :with_two_attached_links, user: user, question: question) }
 
-  scenario 'Authenticated user tries to delete one of his answer\'s attached links', js: true do
-    sign_in(user)
-    visit question_path(question)
+  describe 'Authenticated user tries to delete one of his answer\'s attached links', js: true do
+    background do
+      sign_in(user)
 
-    within '.answers' do
-      find("a[href='#{link_path(answer_with_two_attached_links.links.last)}']").click
+      visit question_path(question)
+    end
 
-      wait_for_ajax
-      expect(page).to have_link href: 'https://ya.ru/'
-      expect(page).not_to have_link href: 'https://2ip.ru/'
+    scenario 'without editing an answer' do
+      within '.answers' do
+        find("a[href='#{link_path(answer_with_two_attached_links.links.last)}']").click
+
+        wait_for_ajax
+        expect(page).to have_link href: 'https://ya.ru/'
+        expect(page).not_to have_link href: 'https://2ip.ru/'
+      end
+    end
+
+    scenario 'then edit an answer' do
+      within '.answers' do
+        click_on 'Edit an Answer'
+
+        all('.remove_fields.existing').first.click
+
+        click_on 'Save'
+
+        wait_for_ajax
+        expect(page).to have_link href: 'https://ya.ru/'
+        expect(page).not_to have_link href: 'https://2ip.ru/'
+      end
     end
   end
 
@@ -30,6 +49,7 @@ feature 'User can delete his answers attached link', %q{
     within '.answers' do
       expect(page).not_to have_link href: "#{link_path(answer_with_two_attached_links.links.first)}"
       expect(page).not_to have_link href: "#{link_path(answer_with_two_attached_links.links.last)}"
+      expect(page).not_to have_content 'Edit an Answer'
     end
   end
 
@@ -39,6 +59,7 @@ feature 'User can delete his answers attached link', %q{
     within '.answers' do
       expect(page).not_to have_link href: "#{link_path(answer_with_two_attached_links.links.first)}"
       expect(page).not_to have_link href: "#{link_path(answer_with_two_attached_links.links.last)}"
+      expect(page).not_to have_content 'Edit an Answer'
     end
   end
 end

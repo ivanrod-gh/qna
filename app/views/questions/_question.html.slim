@@ -24,19 +24,25 @@ div[id = "question"]
     p = link_to 'Edit the Question', '#', class: "edit-question-link", data: { question_id: @question.id }
     p = link_to 'Delete the Question', question_path(@question), method: :delete
     div[id = "question-errors"]
-    = form_with model: @question, class: "hide", id: "edit-question", local: false do |form|
+    = form_with model: @question, class: "hide", id: "edit-question", local: false do |f|
       div
-        = form.label :title, 'Edit question\'s title'
+        = f.label :title, 'Edit question\'s title'
         br
-        = form.text_area :title, cols: 45, rows: 1
+        = f.text_area :title, cols: 45, rows: 1
       div
-        = form.label :body, 'Edit question\'s body'
+        = f.label :body, 'Edit question\'s body'
         br
-        = form.text_area :body, cols: 45, rows: 1
+        = f.text_area :body, cols: 45, rows: 1
       div
-        = form.label :files
+        = f.label :files
         br
-        = form.file_field :files, multiple: true, direct_upload: true
+        = f.file_field :files, multiple: true, direct_upload: true
+      p Links:
+      p
+        = f.fields_for :links do |link|
+          = render 'questions/link_fields', f: link
+        div
+          = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
       div
         br
-        = form.submit 'Update'
+        = f.submit 'Update'
