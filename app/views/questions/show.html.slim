@@ -1,11 +1,12 @@
 span[class="page-mark question-show-js"]
 
-div.question
-  = render @question
+div.question-content
+  div.question
+    = render @question
 
-div.answers
-  - @question.sorted_answers.each do |answer|
-    = render answer
+  div.answers
+    - @question.sorted_answers.each do |answer|
+      = render answer
 
 hr
 - if current_user
