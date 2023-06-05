@@ -36,6 +36,18 @@ feature 'User can create question', %q{
       expect(page).to have_link 'file2.txt'
     end
 
+    scenario 'asks a question with attached reward' do
+      fill_in 'Title', with: 'Test question title'
+      fill_in 'Body', with: 'Test question body'
+
+      attach_file 'Reward', "#{Rails.root}/spec/files/reward1.png"
+      fill_in 'Reward name', with: 'Test reward name'
+      
+      click_on 'Ask'
+
+      expect(page).to have_link 'Test reward name'
+    end
+
     scenario 'asks a question with errors' do
       click_on 'Ask'
 

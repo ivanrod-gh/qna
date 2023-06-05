@@ -10,11 +10,19 @@ p Create New Question
   div
     = f.label :body
     br
-    = f.text_area :body, cols: 45, rows: 1
+    = f.text_area :body, cols: 45, rows: 5
   div
     = f.label :files
     br
     = f.file_field :files, multiple: true, direct_upload: true
+  div
+    = f.label :reward
+    br
+    = f.file_field :reward, direct_upload: true
+  div
+    = f.label :reward_name
+    br
+    = f.text_area :reward_name, cols: 45, rows: 1
   p Links:
   p
     = f.fields_for :links do |link|
