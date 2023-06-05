@@ -23,7 +23,7 @@ feature 'User can see answers gist content on questions page', %q{
     expect(page).to have_content 'line2gf2'
   end
 
-  scenario 'Authenticated user tries to create an answer and see gist content of this answer', js: true do
+  scenario 'Authenticated user tries to create an answer with linked gist and see gist content of this answer', js: true do
     sign_in(user)
     visit question_path(question)
 

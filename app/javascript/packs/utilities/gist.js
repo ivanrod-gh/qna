@@ -13,7 +13,7 @@ function showGistText(event) {
 
   var { Octokit } = require("@octokit/core")
   var octokit = new Octokit()
-  response = octokit.request('GET /gists/' + gistId, {
+  octokit.request('GET /gists/' + gistId, {
     gist_id: gistId,
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'

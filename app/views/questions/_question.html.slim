@@ -20,6 +20,9 @@ div[id = "question"]
           - if @question.user == current_user
             |  
             = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
+  - if current_user && @question.reward.attached?
+    | Reward for this question: 
+    = link_to @question.reward_name, url_for(@question.reward)
   p
     | By: 
     = @question.user.email

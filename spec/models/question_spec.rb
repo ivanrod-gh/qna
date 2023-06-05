@@ -13,4 +13,8 @@ RSpec.describe Question, type: :model do
   it 'have many attached files' do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
+
+  it 'have one attached reward' do
+    expect(Question.new.reward).to be_an_instance_of(ActiveStorage::Attached::One)
+  end
 end
