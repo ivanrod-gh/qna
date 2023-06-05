@@ -56,5 +56,11 @@ FactoryBot.define do
         question.links.new(name: 'link2', url: 'https://2ip.ru/')
       end
     end
+
+    trait :with_attached_gist_link do
+      after(:build) do |answer|
+        answer.links.new(name: 'gist link', url: 'https://gist.github.com/ivanrod-gh/da32151556476ce4cbebd5d0c0c2acbe')
+      end
+    end
   end
 end

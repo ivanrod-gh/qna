@@ -9,6 +9,9 @@ div[id = "question"]
           - if @question.user == current_user
             |  
             = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
+        - if link.gist?
+          p = link_to 'Show gist content (simplified)', '#', class: "show-gist-content", data: { gist_id: link.gist_id, link_id: link.id }
+          div[id="link-#{link.id}-gist-content"]
   - if @question.files.attached?
     - @question.files.each do |file|
       div[id = "attachment-#{file.id}"]

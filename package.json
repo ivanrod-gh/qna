@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@nathanvda/cocoon": "1.2.14",
+    "@octokit/core": "^4.2.1",
     "@popperjs/core": "2.9.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",

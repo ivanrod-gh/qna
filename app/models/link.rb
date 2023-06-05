@@ -6,6 +6,16 @@ class Link < ApplicationRecord
   validates :name, :url, presence: true
   validate :validate_url
 
+  def gist?
+    url =~ /\Ahttps:\/\/gist.github.com/ ? true : false
+  end
+
+  def gist_id
+    url.split('/').reverse_each do |id|
+      return id if id
+    end
+  end
+
   private
 
   def validate_url
