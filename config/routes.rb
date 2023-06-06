@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   root 'questions#index'
   
   devise_for :users
+  resources :users, only: %i[] do
+    member do
+      get :rewards
+    end
+  end
 
   resources :questions, shallow: true do
     resources :answers, shallow: true do

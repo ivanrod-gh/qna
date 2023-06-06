@@ -16,6 +16,15 @@ FactoryBot.define do
     trait :another_one do
       body { "AnotherOneAnswerBodyText" }
     end
+
+    trait :best do
+      best { true }
+    end
+
+    trait :another_best do
+      body { "AnotherAnswerBodyText" }
+      best { true }
+    end
   
     trait :with_attached_file do
       after(:build) do |answer|

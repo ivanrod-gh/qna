@@ -11,6 +11,8 @@ html
     p
       - if current_user.present?
         = link_to 'Sign out', destroy_user_session_path, method: :delete
+        |  
+        = link_to 'My Rewards', rewards_user_path(current_user)
       - else
         = link_to 'Sign up', new_user_registration_path
         |  | 

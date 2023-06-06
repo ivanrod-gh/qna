@@ -7,7 +7,7 @@ class Link < ApplicationRecord
   validate :validate_url
 
   def gist?
-    url =~ /\Ahttps:\/\/gist.github.com/ ? true : false
+    url =~ %r{\Ahttps://gist.github.com} ? true : false
   end
 
   def gist_id

@@ -47,7 +47,21 @@ class AnswersController < ApplicationController
 
   def mark_best_answer
     @answer.question.answers.each do |answer|
-      answer == @answer ? answer.update(best: true) : (answer.update(best: false) if answer.best == true)
+      if answer == @answer
+        answer.update(best: true)
+        assign_reward_achievement(answer) if @answer.question.reward.present?
+      elsif answer.best == true
+        answer.update(best: false)
+      end
+    end
+  end
+
+  def assign_reward_achievement(answer)
+    reward = answer.question.reward
+    if reward.reward_achievement.present?
+      reward.reward_achievement.update(user: answer.user)
+    else
+      reward.reward_achievement = RewardAchievement.create(user: answer.user, reward: reward)
     end
   end
 end
