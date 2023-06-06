@@ -15,14 +15,17 @@ p Create New Question
     = f.label :files
     br
     = f.file_field :files, multiple: true, direct_upload: true
+  p Reward:
   div
-    = f.label :reward
-    br
-    = f.file_field :reward, direct_upload: true
-  div
-    = f.label :reward_name
-    br
-    = f.text_area :reward_name, cols: 45, rows: 1
+    = f.fields_for :reward do |r|
+      div
+        = r.label :name, 'Reward name'
+        br
+        = r.text_field :name
+      div
+        = r.label :file
+        br
+        = r.file_field :file
   p Links:
   p
     = f.fields_for :links do |link|

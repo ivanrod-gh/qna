@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_05_215948) do
+ActiveRecord::Schema.define(version: 2023_06_06_165227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,8 +70,25 @@ ActiveRecord::Schema.define(version: 2023_06_05_215948) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
-    t.string "reward_name"
     t.index ["user_id"], name: "index_questions_on_user_id"
+  end
+
+  create_table "reward_achievements", force: :cascade do |t|
+    t.bigint "reward_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reward_id"], name: "index_reward_achievements_on_reward_id", unique: true
+    t.index ["user_id"], name: "index_reward_achievements_on_user_id"
+  end
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "rewardable_type"
+    t.bigint "rewardable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["rewardable_type", "rewardable_id"], name: "index_rewards_on_rewardable"
   end
 
   create_table "users", force: :cascade do |t|
@@ -91,4 +108,6 @@ ActiveRecord::Schema.define(version: 2023_06_05_215948) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "reward_achievements", "rewards"
+  add_foreign_key "reward_achievements", "users"
 end

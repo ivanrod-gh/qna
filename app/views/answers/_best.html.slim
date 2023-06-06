@@ -2,8 +2,8 @@
   - if answer.question.reward.present?
     p Rewarded:
     p
-      = answer.question.reward_name
-    img[src="#{url_for(answer.question.reward)}"]
+      = answer.question.reward.name
+    img[src="#{url_for(answer.question.reward.file)}"]
   - else
     p
       | *Best answer*

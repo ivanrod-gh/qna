@@ -40,8 +40,8 @@ feature 'User can create question', %q{
       fill_in 'Title', with: 'Test question title'
       fill_in 'Body', with: 'Test question body'
 
-      attach_file 'Reward', "#{Rails.root}/spec/files/reward1.png"
       fill_in 'Reward name', with: 'Test reward name'
+      attach_file 'File', "#{Rails.root}/spec/files/reward1.png"
       
       click_on 'Ask'
 

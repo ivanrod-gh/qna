@@ -43,17 +43,6 @@ FactoryBot.define do
         )
       end
     end
-  
-    trait :with_attached_reward do
-      reward_name { "BasicRewardString" }
-      after(:build) do |question|
-        question.reward.attach(
-          io: File.open("#{Rails.root}/spec/files/reward1.png"),
-          filename: 'reward1.png',
-          content_type: 'image/png'
-        )
-      end
-    end
 
     trait :with_attached_link do
       after(:build) do |question|

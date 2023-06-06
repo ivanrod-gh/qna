@@ -8,7 +8,8 @@ feature 'User can mark an answer for his question as the best answer', %q{
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given(:question_with_attached_reward) { create(:question, :with_attached_reward, user: user) }
+  given(:question_with_attached_reward) { create(:question, user: user) }
+  given(:reward) { create(:reward, rewardable: question_with_attached_reward) }
   given(:answer) { create(:answer, user: user, question: question) }
   given(:another_answer) { create(:answer, user: user, question: question_with_attached_reward) }
 
@@ -29,6 +30,7 @@ feature 'User can mark an answer for his question as the best answer', %q{
 
       scenario 'then question has a reward' do
         another_answer
+        reward
         sign_in(user)
         visit question_path(question_with_attached_reward)
 
@@ -36,7 +38,7 @@ feature 'User can mark an answer for his question as the best answer', %q{
 
         within '.answers' do
           wait_for_ajax
-          expect(page).to have_content 'BasicRewardString'
+          expect(page).to have_content 'BasicRewardNameString'
         end
       end
     end
