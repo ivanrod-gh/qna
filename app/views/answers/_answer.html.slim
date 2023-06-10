@@ -20,6 +20,7 @@ div[id = "answer-#{answer.id}"]
           - if answer.user == current_user
             |  
             = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
+  = render 'shared/votes', resource: answer
   p
     | By: 
     = answer.user.email

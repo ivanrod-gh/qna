@@ -12,7 +12,14 @@ Rails.application.routes.draw do
     resources :answers, shallow: true do
       member do
         post :best_mark
+        post :like, defaults: { votable_table: 'answers'}
+        post :dislike, defaults: { votable_table: 'answers'}
       end
+    end
+
+    member do
+      post :like, defaults: { votable_table: 'questions'}
+      post :dislike, defaults: { votable_table: 'questions'}
     end
   end
 
