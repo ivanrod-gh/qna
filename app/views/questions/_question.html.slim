@@ -23,6 +23,7 @@ div[id = "question"]
   - if current_user && @question.reward.present? && @question.reward.file.attached?
     | Reward for this question: 
     = link_to @question.reward.name, url_for(@question.reward.file)
+  = render 'shared/votes', resource: @question
   p
     | By: 
     = @question.user.email

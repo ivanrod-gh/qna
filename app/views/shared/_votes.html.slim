@@ -1,0 +1,19 @@
+p[id="votable-rating-#{resource.id}"]
+  | Rating: 
+  span[class="counter"]
+    - if resource.votes.present?
+      = resource.votes.where(liked: true).count - resource.votes.where(liked: false).count
+    - else
+      |  0 
+  |  
+  - if current_user.present? && resource.user != current_user
+    - vote = resource.votes.where(user: current_user).first
+    - if vote.present? && vote.liked == true
+      = link_to 'Like', eval("Rails.application.routes.url_helpers.like_#{resource.class.name.underscore}_path(#{resource.id})"), method: :post, remote: true, data: { type: :json }, class: 'like-link', style: 'color: green;'
+    - else
+      = link_to 'Like', eval("Rails.application.routes.url_helpers.like_#{resource.class.name.underscore}_path(#{resource.id})"), method: :post, remote: true, data: { type: :json }, class: 'like-link', style: 'color: black;'
+    |  / 
+    - if vote.present? && vote.liked == false
+      = link_to 'Dislike', eval("Rails.application.routes.url_helpers.dislike_#{resource.class.name.underscore}_path(#{resource.id})"), method: :post, remote: true, data: { type: :json }, class: 'dislike-link', style: 'color: red;'
+    - else
+      = link_to 'Dislike', eval("Rails.application.routes.url_helpers.dislike_#{resource.class.name.underscore}_path(#{resource.id})"), method: :post, remote: true, data: { type: :json }, class: 'dislike-link', style: 'color: black;'

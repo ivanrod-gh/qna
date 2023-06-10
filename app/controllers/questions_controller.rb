@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[show update destroy]
 
+  include Votable
+
   def index
     @questions = Question.all
   end
