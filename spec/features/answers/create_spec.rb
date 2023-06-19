@@ -42,7 +42,34 @@ feature 'User can create answer at question page', %q{
       click_on 'Answer'
 
       expect(page).to have_content "Body can't be blank"
-     end
+    end
+  end
+
+  describe 'When multiple users exists and they watch the answers\'s question', js: true do
+    scenario 'any user can see answer immediately appears when another user creates it' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+      
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+      
+      Capybara.using_session('user') do
+        fill_in 'Body', with: attributes_for(:answer)[:body]
+        
+        click_on 'Answer'
+
+        wait_for_ajax
+        expect(page).to have_content attributes_for(:answer)[:body]
+      end
+      
+      Capybara.using_session('guest') do
+        wait_for_ajax
+        expect(page).to have_content attributes_for(:answer)[:body]
+      end
+    end
   end
 
   scenario 'Unauthenticated user tries to create an answer' do

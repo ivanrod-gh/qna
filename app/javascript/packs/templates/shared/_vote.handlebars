@@ -1,0 +1,17 @@
+<p id="votable-{{resource.table}}-rating-{{resource.id}}">
+  <span>Rating: </span>
+  <span class="counter">
+    {{#if resource.rating}}
+      <span>{{resource.rating}}</span>
+    {{else}}
+      <span>0</span>
+    {{/if}}
+  </span>
+  {{#if resource.current_user_exists_and_resource_user_not_eq_current_user}}
+    <a data-type="json" class="like-link" style="color: black;" data-remote="true" rel="nofollow" data-method="post" href="/answers/{{resource.id}}/like">Like</a>
+    <span> / </span>
+    <a data-type="json" class="dislike-link" style="color: black;" data-remote="true" rel="nofollow" data-method="post" href="/answers/{{resource.id}}/dislike">Dislike</a>
+  {{/if}}
+</p>
+
+

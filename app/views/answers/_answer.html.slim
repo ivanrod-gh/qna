@@ -1,9 +1,9 @@
-div[id = "answer-#{answer.id}"]
+div[id="answers-#{answer.id}"]
   hr
   p = answer.body
   - if answer.links.present?
     - answer.links.each do |link|
-      div[id = "link-#{link.id}"]
+      div[id="link-#{link.id}"]
         p
           = link_to link.name, link.url
           - if answer.user == current_user
@@ -14,22 +14,22 @@ div[id = "answer-#{answer.id}"]
           div[id="link-#{link.id}-gist-content"]
   - if answer.files.attached?
     - answer.files.each do |file|
-      div[id = "attachment-#{file.id}"]
+      div[id="attachment-#{file.id}"]
         p
           = link_to file.filename.to_s, url_for(file)
           - if answer.user == current_user
             |  
             = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
-  = render 'shared/votes', resource: answer
+  = render 'shared/vote', resource: answer, table: 'answers'
   p
     | By: 
     = answer.user.email
-    div[id = "answer-best-#{answer.id}"]
+    div[id="answer-best-#{answer.id}"]
       = render 'answers/best', answer: answer
   - if answer.user == current_user
     p = link_to 'Edit an Answer', '#', class: "edit-answer-link", data: { answer_id: answer.id }
     p = link_to 'Delete an Answer', answer_path(answer), method: :delete, remote: true
-    div[id = "answer-errors-#{answer.id}"]
+    div[id="answer-errors-#{answer.id}"]
     = form_with model: answer, class: "hide", id: "edit-answer-#{answer.id}", local: false do |f|
       div
         = f.label :body, 'Edit your answer'
@@ -48,5 +48,6 @@ div[id = "answer-#{answer.id}"]
       div
         br
         = f.submit 'Save'
+  = render 'shared/comments', resource: answer
 
 

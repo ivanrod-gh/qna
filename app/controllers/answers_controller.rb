@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :find_answer, only: %i[update destroy best_mark]
+  include Voted
+  include Commented
 
-  include Votable
+  before_action :find_answer, only: %i[update destroy best_mark]
+  after_action :publish_answer, only: :create
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params.merge!(user: current_user))
+    @comment = Comment.new
   end
 
   def update
@@ -41,6 +43,7 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
+    @comment = Comment.new
   end
 
   def answer_params
@@ -65,5 +68,56 @@ class AnswersController < ApplicationController
     else
       reward.reward_achievement = RewardAchievement.create(user: answer.user, reward: reward)
     end
+  end
+
+  def publish_answer
+    return unless @answer.errors.empty?
+
+    @response = publish_answer_json_response
+    add_info_to_publish_answer
+    ActionCable.server.broadcast "questions_#{@answer.question.id}_show", @response
+  end
+
+  def publish_answer_json_response
+    @answer.as_json(
+      except: %i[created_at updated_at],
+      include: {
+        links: { except: %i[created_at updated_at linkable_type linkable_id] },
+        files: { except: %i[created_at updated_at record_type record_id blob_id] },
+        user: { only: :email },
+        question: { only: :user_id }
+      }
+    )
+  end
+
+  def add_info_to_publish_answer
+    publish_answer_links
+    publish_answer_files
+    publish_answer_global
+  end
+
+  def publish_answer_links
+    @response['links'].each do |item|
+      link = Link.find_by(id: item['id'])
+      if link.gist?
+        item['gist?'] = link.gist?
+        item['gist_id'] = link.gist_id
+      end
+    end
+  end
+
+  def publish_answer_files
+    @response['files'].each do |item|
+      attach = ActiveStorage::Attachment.find_by(id: item['id'])
+      item['name'] = attach.filename.to_s
+      item['url'] = Rails.application.routes.url_helpers.rails_blob_path(attach, only_path: true)
+    end
+  end
+
+  def publish_answer_global
+    @response['rating'] = @answer.rating
+    @response['table'] = 'answers'
+    @response['controller'] = 'answers_controller'
+    @response['action'] = 'create'
   end
 end

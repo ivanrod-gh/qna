@@ -1,0 +1,6 @@
+<b>{{resource.errors.count}} error(s) detected</b>
+<ul>
+  {{#each resource.errors.full_messages }}
+    <li>{{this}}</li>
+  {{/each}}
+</ul>

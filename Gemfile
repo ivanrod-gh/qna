@@ -32,11 +32,14 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails', '~> 3.6.0'
 # Authentication
 gem 'devise', '~> 4.0'
-# UI - Icons
+# UI - icons
 gem 'octokit', '~> 5.0'
 gem 'octicons_helper', '~> 18.2.0'
 # UI - dinamic add/edit/destroy resources
 gem 'cocoon', '1.2.14'
+# UI - add server data to frontend page
+gem 'gon', '~> 6.4.0'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

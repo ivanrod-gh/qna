@@ -55,6 +55,37 @@ feature 'User can create question', %q{
     end
   end
 
+  describe 'When multiple users exists', js: true do
+    scenario 'any user can see question immediately appears when another user creates it' do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit questions_path
+      end
+      
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+      
+      Capybara.using_session('user') do
+        click_on 'Ask question'
+
+        fill_in 'Title', with: 'Test question title'
+        fill_in 'Body', with: 'Test question body'
+        click_on 'Ask'
+
+        expect(page).to have_content 'Your question successfully created.'
+        expect(page).to have_content 'Test question title'
+        expect(page).to have_content 'Test question body'
+      end
+      
+      Capybara.using_session('guest') do
+        wait_for_ajax
+        expect(page).to have_content 'Test question title'
+        expect(page).to have_content 'Test question body'
+      end
+    end
+  end
+
   scenario 'Unauthenticated user tries to ask a question' do
     visit questions_path
     click_on 'Ask question'

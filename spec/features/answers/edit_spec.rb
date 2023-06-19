@@ -31,7 +31,7 @@ feature 'User can edit his answer', %q{
         wait_for_ajax
         expect(page).not_to have_content answer.body
         expect(page).to have_content attributes_for(:answer, :another)[:body]
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content 'Edit your answer'
       end
     end
 
@@ -49,7 +49,7 @@ feature 'User can edit his answer', %q{
         wait_for_ajax
         expect(page).to have_link 'file1.txt'
         expect(page).to have_link 'file2.txt'
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content 'Edit your answer'
       end
     end
 
@@ -67,7 +67,7 @@ feature 'User can edit his answer', %q{
         wait_for_ajax
         expect(page).to have_content answer.body
         expect(page).to have_content 'Body can\'t be blank'
-        expect(page).to have_selector 'textarea'
+        expect(page).to have_content 'Edit your answer'
       end
     end
 
@@ -78,7 +78,7 @@ feature 'User can edit his answer', %q{
       within '.answers' do
         wait_for_ajax
         expect(page).not_to have_content 'Edit an Answer'
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content 'Edit your answer'
       end
     end
   end
@@ -88,7 +88,7 @@ feature 'User can edit his answer', %q{
 
     within '.answers' do
       expect(page).not_to have_content 'Edit an Answer'
-      expect(page).not_to have_selector 'textarea'
+      expect(page).not_to have_content 'Edit your answer'
     end
   end
 end

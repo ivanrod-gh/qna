@@ -1,9 +1,9 @@
-div[id = "question"]
+div[id="questions-#{@question.id}"]
   p = @question.title
   p = @question.body
   - if @question.links.present?
     - @question.links.each do |link|
-      div[id = "link-#{link.id}"]
+      div[id="link-#{link.id}"]
         p
           = link_to link.name, link.url
           - if @question.user == current_user
@@ -14,7 +14,7 @@ div[id = "question"]
           div[id="link-#{link.id}-gist-content"]
   - if @question.files.attached?
     - @question.files.each do |file|
-      div[id = "attachment-#{file.id}"]
+      div[id="attachment-#{file.id}"]
         p
           = link_to file.filename.to_s, url_for(file)
           - if @question.user == current_user
@@ -23,14 +23,14 @@ div[id = "question"]
   - if current_user && @question.reward.present? && @question.reward.file.attached?
     | Reward for this question: 
     = link_to @question.reward.name, url_for(@question.reward.file)
-  = render 'shared/votes', resource: @question
+  = render 'shared/vote', resource: @question, table: 'questions'
   p
     | By: 
     = @question.user.email
   - if @question.user == current_user
     p = link_to 'Edit the Question', '#', class: "edit-question-link", data: { question_id: @question.id }
     p = link_to 'Delete the Question', question_path(@question), method: :delete
-    div[id = "question-errors"]
+    div[id="question-errors"]
     = form_with model: @question, class: "hide", id: "edit-question", local: false do |f|
       div
         = f.label :title, 'Edit question\'s title'
@@ -53,3 +53,4 @@ div[id = "question"]
       div
         br
         = f.submit 'Update'
+  = render 'shared/comments', resource: @question
