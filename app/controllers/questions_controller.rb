@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show update destroy]
+  include Voted
+  include Commented
 
-  include Votable
+  skip_before_action :authenticate_user!, only: %i[index show]
+  before_action :find_question, only: %i[show update destroy]
+  after_action :publish_question, only: :create
 
   def index
     @questions = Question.all
@@ -13,6 +15,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answer.links.new
+    gon.question_id = @question.id
   end
 
   def new
@@ -51,6 +54,7 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
+    @comment = Comment.new
   end
 
   def question_params
@@ -61,5 +65,15 @@ class QuestionsController < ApplicationController
       links_attributes: %i[id name url _destroy],
       reward_attributes: %i[name file]
     )
+  end
+
+  def publish_question
+    if @question.errors.empty?
+      ActionCable.server.broadcast 'questions_index',
+                                   ApplicationController.render(
+                                     partial: 'questions/question_header',
+                                     locals: { question: @question }
+                                   )
+    end
   end
 end

@@ -32,7 +32,7 @@ feature 'User can edit his question', %q{
         expect(page).not_to have_content question.title
         expect(page).not_to have_content question.body
         expect(page).to have_content attributes_for(:question, :another)[:body]
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content "Edit question's title"
       end
     end
 
@@ -50,7 +50,7 @@ feature 'User can edit his question', %q{
         wait_for_ajax
         expect(page).to have_link 'file1.txt'
         expect(page).to have_link 'file2.txt'
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content "Edit question's title"
       end
     end
 
@@ -71,7 +71,7 @@ feature 'User can edit his question', %q{
         expect(page).to have_content question.body
         expect(page).to have_content 'Title can\'t be blank'
         expect(page).to have_content 'Body can\'t be blank'
-        expect(page).to have_selector 'textarea'
+        expect(page).to have_content "Edit question's title"
       end
     end
 
@@ -82,7 +82,7 @@ feature 'User can edit his question', %q{
       within '.question' do
         wait_for_ajax
         expect(page).not_to have_content 'Edit the Question'
-        expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content "Edit question's title"
       end
     end
   end
@@ -92,7 +92,7 @@ feature 'User can edit his question', %q{
 
     within '.question' do
       expect(page).not_to have_content 'Edit an Answer'
-      expect(page).not_to have_selector 'textarea'
+        expect(page).not_to have_content "Edit question's title"
     end
   end
 end

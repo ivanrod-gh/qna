@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User can delete his answers attached link', %q{
-  In order to delete an unnecessary (expired) answer's attached link
+  In order to delete my unnecessary (expired) answer's attached link
   As an authenticated user
   I'd like to be able to delete my answer's attached link
 } do
@@ -36,6 +36,7 @@ feature 'User can delete his answers attached link', %q{
         click_on 'Save'
 
         wait_for_ajax
+        sleep(0.2)
         expect(page).to have_link href: 'https://ya.ru/'
         expect(page).not_to have_link href: 'https://2ip.ru/'
       end

@@ -1,9 +1,7 @@
+span[class="page-mark questions-index-js"]
+
 p = link_to 'Ask question', new_question_path
 
-div
+div.questions-headers-list
   - @questions.each do |question|
-    div
-      h3 = question.title
-      p = question.body
-      p = link_to 'Watch', question_path(question)
-    hr
+    = render 'question_header', question: question

@@ -1,5 +1,5 @@
 document.addEventListener('turbolinks:load', function() {
-  if (!document.querySelector('.page-mark.question-show-js')) return
+  if (!document.querySelector('.page-mark.questions-show-js')) return
 
   document.querySelector('.answers').addEventListener('click', showAnswerEditForm)
 })

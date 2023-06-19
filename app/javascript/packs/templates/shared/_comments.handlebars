@@ -1,0 +1,19 @@
+<div class="comments">
+  <div class="list">
+  </div>
+  <div class="errors">
+  </div>
+  <div class="new">
+    <form data-type="json" action="/{{resource.table}}/{{resource.id}}/comment" accept-charset="UTF-8" data-remote="true" method="post">
+      <div class="authenticity-token"></div>
+      <div>
+        <label for="comment_body">Add comment</label>
+        <br>
+        <textarea cols="45" rows="1" name="comment[body]" id="comment_body"></textarea>
+      </div>
+      <div>
+        <input type="submit" name="commit" value="Comment" data-disable-with="Comment">
+      </div>
+    </form>
+  </div>
+</div>

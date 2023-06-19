@@ -1,22 +1,24 @@
 # frozen_string_literal: true
 
-module Votable
+module Voted
   extend ActiveSupport::Concern
 
+  included do
+    before_action :set_votable_and_vote, only: %i[like dislike]
+  end
+
   def like
-    set_votable_and_vote
     user_vote(true) unless @votable.user == current_user
   end
 
   def dislike
-    set_votable_and_vote
     user_vote(false) unless @votable.user == current_user
   end
 
   private
 
   def set_votable_and_vote
-    @votable = params[:votable_table].classify.constantize.find(params[:id])
+    @votable = params[:table].classify.constantize.find(params[:id])
     @vote = @votable.votes.where(user: current_user).first
   end
 
@@ -33,13 +35,9 @@ module Votable
   def respond(decision)
     respond_to do |format|
       format.json do
-        render json: { id: @votable.id, rating: rating,
+        render json: { controller: 'voted', table: params[:table], id: @votable.id, rating: @votable.rating,
                        liked: @votable.votes.where(user: current_user).present? ? decision : nil }
       end
     end
-  end
-
-  def rating
-    @votable.votes.where(liked: true).count - @votable.votes.where(liked: false).count
   end
 end
