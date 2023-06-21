@@ -39,6 +39,10 @@ gem 'octicons_helper', '~> 18.2.0'
 gem 'cocoon', '1.2.14'
 # UI - add server data to frontend page
 gem 'gon', '~> 6.4.0'
+# Third party authentication
+gem 'omniauth'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-github'
 
 
 group :development, :test do
