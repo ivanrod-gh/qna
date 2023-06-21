@@ -70,6 +70,9 @@ RSpec.configure do |config|
   Capybara.default_max_wait_time = 5
   config.include WaitForAjax, type: :feature
 
+  config.include OmniauthHelpers
+  OmniAuth.config.test_mode = true
+
   config.after(:all) do
     FileUtils.rm_rf("#{Rails.root}/tmp/storage", secure: true)
   end
