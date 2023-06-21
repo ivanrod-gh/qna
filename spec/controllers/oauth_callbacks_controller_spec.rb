@@ -7,6 +7,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
   
   describe '#github' do
     let(:oauth_data) {{ 'provider' => 'github', 'uid' => 123 }}
+    let(:oauth_hash) { OmniAuth::AuthHash.new(provider: 'github') }
     let(:service) { double('Services::FindForOauth') }
     
     it 'finds user from oauth data' do
@@ -23,6 +24,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
       before do
         allow(Services::FindForOauth).to receive(:new).and_return(service)
         allow(service).to receive(:call).and_return(user)
+        allow(request.env).to receive(:[]).and_call_original
+        allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_hash)
         get :github
       end
       

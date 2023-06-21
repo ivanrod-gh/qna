@@ -40,9 +40,9 @@ gem 'cocoon', '1.2.14'
 # UI - add server data to frontend page
 gem 'gon', '~> 6.4.0'
 # Third party authentication
-gem 'omniauth'
-gem 'omniauth-rails_csrf_protection'
+gem 'omniauth', '~> 1.9.2'
 gem 'omniauth-github'
+gem "omniauth-yandex"
 
 
 group :development, :test do
