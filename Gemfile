@@ -32,8 +32,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails', '~> 3.6.0'
 # Authentication
 gem 'devise', '~> 4.0'
-# UI - icons
+# GitHub API
 gem 'octokit', '~> 5.0'
+# UI - icons
 gem 'octicons_helper', '~> 18.2.0'
 # UI - dinamic add/edit/destroy resources
 gem 'cocoon', '1.2.14'
@@ -43,6 +44,8 @@ gem 'gon', '~> 6.4.0'
 gem 'omniauth', '~> 1.9.2'
 gem 'omniauth-github'
 gem "omniauth-yandex"
+# Authorization
+gem 'cancancan', '~> 3.5.0'
 
 
 group :development, :test do

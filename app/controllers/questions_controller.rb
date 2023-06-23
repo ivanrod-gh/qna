@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: %i[show update destroy]
   after_action :publish_question, only: :create
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -34,20 +36,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.user == current_user
-      @question.update(question_params)
-    else
-      redirect_to question_path(@question), notice: "You are not be able to perform this action."
-    end
+    @question.update(question_params)
   end
 
   def destroy
-    if @question.user == current_user
-      @question.destroy
-      redirect_to questions_path
-    else
-      redirect_to questions_path, notice: "You are not be able to perform this action."
-    end
+    @question.destroy
+    redirect_to root_path
   end
 
   private

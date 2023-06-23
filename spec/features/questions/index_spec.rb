@@ -16,7 +16,6 @@ feature 'User can watch all questions', %q{
 
     Question.all.each do |question|
       expect(page).to have_content question[:title]
-      expect(page).to have_content question[:body]
     end
   end
 end

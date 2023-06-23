@@ -27,9 +27,9 @@ RSpec.describe AttachmentsController, type: :controller do
           end.to change(ActiveStorage::Attachment, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: question_with_attached_file.files.first }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -56,9 +56,9 @@ RSpec.describe AttachmentsController, type: :controller do
           end.to change(ActiveStorage::Attachment, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: answer_with_attached_file.files.first }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end

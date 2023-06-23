@@ -31,9 +31,9 @@ RSpec.describe CommentsController, type: :controller do
           end.to change(Comment, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: questions_comment }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -60,9 +60,9 @@ RSpec.describe CommentsController, type: :controller do
           end.to change(Comment, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: answers_comment }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end

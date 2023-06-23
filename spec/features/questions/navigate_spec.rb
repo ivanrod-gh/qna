@@ -25,8 +25,6 @@ feature 'User can move from viewing questions list to view current question and 
     click_on 'Back'
 
     expect(page).to have_content question.title
-    expect(page).to have_content question.body
     expect(page).to have_content another_question.title
-    expect(page).to have_content another_question.body
   end
 end

@@ -87,9 +87,9 @@ RSpec.describe AnswersController, type: :controller do
         end.not_to change(answer, :body)
       end
     
-      it 'redirect to current question' do
+      it 'redirect to root path' do
         patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -117,9 +117,9 @@ RSpec.describe AnswersController, type: :controller do
         expect{ delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
       end
 
-      it 'redirect to current question' do
+      it 'redirect to root path' do
         delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -157,9 +157,9 @@ RSpec.describe AnswersController, type: :controller do
         end.not_to change(answer, :best)
       end
 
-      it 'redirect to current question' do
+      it 'redirect to root path' do
         post :best_mark, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
   end
