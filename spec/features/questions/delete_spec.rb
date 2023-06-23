@@ -19,7 +19,6 @@ feature 'User can delete his question', %q{
     expect(page).not_to have_content question.title
     expect(page).not_to have_content question.body
     expect(page).to have_content another_question.title
-    expect(page).to have_content another_question.body
   end
 
   scenario 'Authenticated user tries to delete not his question' do

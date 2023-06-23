@@ -8,11 +8,13 @@ module Voted
   end
 
   def like
-    user_vote(true) unless @votable.user == current_user
+    authorize! :like, @votable
+    user_vote(true)
   end
 
   def dislike
-    user_vote(false) unless @votable.user == current_user
+    authorize! :dislike, @votable
+    user_vote(false)
   end
 
   private

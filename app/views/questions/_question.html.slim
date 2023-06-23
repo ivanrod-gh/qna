@@ -6,7 +6,7 @@ div[id="questions-#{@question.id}"]
       div[id="link-#{link.id}"]
         p
           = link_to link.name, link.url
-          - if @question.user == current_user
+          - if can?(:destroy, link)
             |  
             = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
         - if link.gist?
@@ -17,7 +17,7 @@ div[id="questions-#{@question.id}"]
       div[id="attachment-#{file.id}"]
         p
           = link_to file.filename.to_s, url_for(file)
-          - if @question.user == current_user
+          - if can?(:destroy, file)
             |  
             = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
   - if current_user && @question.reward.present? && @question.reward.file.attached?
@@ -27,7 +27,7 @@ div[id="questions-#{@question.id}"]
   p
     | By: 
     = @question.user.email
-  - if @question.user == current_user
+  - if can?(:update, @question)
     p = link_to 'Edit the Question', '#', class: "edit-question-link", data: { question_id: @question.id }
     p = link_to 'Delete the Question', question_path(@question), method: :delete
     div[id="question-errors"]

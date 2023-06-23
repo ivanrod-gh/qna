@@ -7,7 +7,7 @@ div.comments
         div
           |By: 
           = comment.user.email
-          - if comment.user == current_user
+          - if can?(:destroy, comment)
             |  
             = link_to 'X', comment_path(comment), method: :delete, remote: true, data: { type: :json }
         br

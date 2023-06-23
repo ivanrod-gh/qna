@@ -7,5 +7,5 @@
   - else
     p
       | *Best answer*
-- elsif answer.question.user == current_user
+- elsif can?(:best_mark, answer)
     p = link_to 'Mark as best', best_mark_answer_path(answer), method: :post, remote: true

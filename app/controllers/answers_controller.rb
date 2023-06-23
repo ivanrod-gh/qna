@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy best_mark]
   after_action :publish_answer, only: :create
 
+  authorize_resource
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params.merge!(user: current_user))
@@ -14,29 +16,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.user == current_user
-      @answer.update(answer_params)
-      @question = @answer.question
-    else
-      redirect_to question_path(@answer.question), notice: "You are not be able to perform this action."
-    end
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
-    if @answer.user == current_user
-      @answer.destroy
-    else
-      redirect_to question_path(@answer.question), notice: "You are not be able to perform this action."
-    end
+    @answer.destroy
   end
 
   def best_mark
-    if @answer.question.user == current_user
-      mark_best_answer
-      @answers = @answer.question.sorted_answers
-    else
-      redirect_to question_path(@answer.question), notice: "You are not be able to perform this action."
-    end
+    mark_best_answer
+    @answers = @answer.question.sorted_answers
   end
 
   private

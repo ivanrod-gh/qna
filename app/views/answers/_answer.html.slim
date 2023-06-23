@@ -6,7 +6,7 @@ div[id="answers-#{answer.id}"]
       div[id="link-#{link.id}"]
         p
           = link_to link.name, link.url
-          - if answer.user == current_user
+          - if can?(:destroy, link)
             |  
             = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
         - if link.gist?
@@ -17,7 +17,7 @@ div[id="answers-#{answer.id}"]
       div[id="attachment-#{file.id}"]
         p
           = link_to file.filename.to_s, url_for(file)
-          - if answer.user == current_user
+          - if can?(:destroy, file)
             |  
             = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
   = render 'shared/vote', resource: answer, table: 'answers'
@@ -26,7 +26,7 @@ div[id="answers-#{answer.id}"]
     = answer.user.email
     div[id="answer-best-#{answer.id}"]
       = render 'answers/best', answer: answer
-  - if answer.user == current_user
+  - if can?(:update, answer)
     p = link_to 'Edit an Answer', '#', class: "edit-answer-link", data: { answer_id: answer.id }
     p = link_to 'Delete an Answer', answer_path(answer), method: :delete, remote: true
     div[id="answer-errors-#{answer.id}"]

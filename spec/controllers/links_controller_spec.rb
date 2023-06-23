@@ -11,7 +11,7 @@ RSpec.describe LinksController, type: :controller do
       describe 'and user logged in as an author of the question' do
         before { login(user) }
 
-        it 'delete the attachment' do
+        it 'delete the link' do
           expect do
             delete :destroy, params: { id: question_with_attached_link.links.first }, format: :js
           end.to change(Link, :count).by(-1)
@@ -21,15 +21,15 @@ RSpec.describe LinksController, type: :controller do
       describe 'and user logged in not as an author of the question' do
         before { login(another_user) }
 
-        it 'does not delete the attachment' do
+        it 'does not delete the link' do
           expect do
             delete :destroy, params: { id: question_with_attached_link.links.first }, format: :js
           end.to change(Link, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: question_with_attached_link.links.first }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe LinksController, type: :controller do
       describe 'and user logged in as an author of the answer' do
         before { login(user) }
 
-        it 'delete the attachment' do
+        it 'delete the link' do
           expect do
             delete :destroy, params: { id: answer_with_attached_link.links.first }, format: :js
           end.to change(Link, :count).by(-1)
@@ -50,15 +50,15 @@ RSpec.describe LinksController, type: :controller do
       describe 'and user logged in not as an author of the answer' do
         before { login(another_user) }
 
-        it 'does not delete the attachment' do
+        it 'does not delete the link' do
           expect do
             delete :destroy, params: { id: answer_with_attached_link.links.first }, format: :js
           end.to change(Link, :count).by(0)
         end
 
-        it 'redirect to index' do
+        it 'redirect to root path' do
           delete :destroy, params: { id: answer_with_attached_link.links.first }, format: :js
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end

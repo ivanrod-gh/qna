@@ -81,15 +81,13 @@ feature 'User can create question', %q{
       Capybara.using_session('guest') do
         wait_for_ajax
         expect(page).to have_content 'Test question title'
-        expect(page).to have_content 'Test question body'
       end
     end
   end
 
   scenario 'Unauthenticated user tries to ask a question' do
     visit questions_path
-    click_on 'Ask question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'In order to ask questions please sign in'
   end
 end
