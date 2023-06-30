@@ -4,29 +4,30 @@ class QuestionsController < ApplicationController
   include Voted
   include Commented
 
-  skip_before_action :authenticate_user!, only: %i[index show]
   before_action :find_question, only: %i[show update destroy]
   after_action :publish_question, only: :create
 
-  authorize_resource
-
   def index
+    authorize! :index, Question
     @questions = Question.all
   end
 
   def show
+    authorize! :show, Question
     @answer = Answer.new
     @answer.links.new
     gon.question_id = @question.id
   end
 
   def new
+    authorize! :new, Question
     @question = Question.new
     @question.links.new
     @question.reward = Reward.new
   end
 
   def create
+    authorize! :create, Question
     @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
@@ -36,10 +37,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authorize! :update, @question
     @question.update(question_params)
   end
 
   def destroy
+    authorize! :destroy, @question
     @question.destroy
     redirect_to root_path
   end

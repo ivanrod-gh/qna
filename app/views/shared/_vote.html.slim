@@ -6,7 +6,7 @@ p[id="votable-#{table}-rating-#{resource.id}"]
     - else
       |  0 
   |  
-  - if can?(:like, resource) || can?(:dislike, resource)
+  - if can?(:like, resource) && can?(:dislike, resource)
     - vote = resource.votes.where(user: current_user).first
     - if vote.present? && vote.liked == true
       = link_to 'Like', eval("Rails.application.routes.url_helpers.like_#{resource.class.name.underscore}_path(#{resource.id})"), method: :post, remote: true, data: { type: :json }, class: 'like-link', style: 'color: green;'

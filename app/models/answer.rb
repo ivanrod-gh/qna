@@ -12,5 +12,7 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
+  default_scope { order(id: :asc) }
+
   validates :body, presence: true
 end
