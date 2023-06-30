@@ -43,9 +43,14 @@ gem 'gon', '~> 6.4.0'
 # Third party authentication
 gem 'omniauth', '~> 1.9.2'
 gem 'omniauth-github'
-gem "omniauth-yandex"
+gem 'omniauth-yandex'
 # Authorization
 gem 'cancancan', '~> 3.5.0'
+# Add OAuth providing function to application
+gem 'doorkeeper', '~> 5.6.6'
+# Create and fill application response
+gem 'active_model_serializers', '~> 0.10.13'
+gem 'oj'
 
 
 group :development, :test do

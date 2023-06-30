@@ -8,6 +8,7 @@ module Commented
   end
 
   def comment
+    authorize! :comment, @commentable
     @comment = @commentable.comments.create(commentable_params.merge!(user: current_user))
 
     @response = comment_json_response

@@ -14,6 +14,8 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
+  default_scope { order(id: :asc) }
+
   validates :title, :body, presence: true
 
   def sorted_answers

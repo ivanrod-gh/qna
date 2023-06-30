@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :find_comment, only: %i[destroy]
-
-  authorize_resource
-
   def destroy
+    @comment = Comment.find(params[:id])
+    authorize! :destroy, @comment
     perform_destroy(@comment)
   end
 
   private
-
-  def find_comment
-    @comment = Comment.find(params[:id])
-  end
 
   def perform_destroy(comment)
     comment.destroy

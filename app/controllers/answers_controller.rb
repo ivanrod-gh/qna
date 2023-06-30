@@ -7,24 +7,26 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy best_mark]
   after_action :publish_answer, only: :create
 
-  authorize_resource
-
   def create
+    authorize! :create, Answer
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params.merge!(user: current_user))
     @comment = Comment.new
   end
 
   def update
+    authorize! :update, @answer
     @answer.update(answer_params)
     @question = @answer.question
   end
 
   def destroy
+    authorize! :destroy, @answer
     @answer.destroy
   end
 
   def best_mark
+    authorize! :best_mark, @answer
     mark_best_answer
     @answers = @answer.question.sorted_answers
   end

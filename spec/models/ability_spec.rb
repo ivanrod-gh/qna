@@ -6,7 +6,9 @@ RSpec.describe Ability, type: :model do
   describe 'for guest' do
     let(:user) { nil }
 
-    it { should     be_able_to :read, :all }
+    it { should     be_able_to :index, Question }
+    it { should     be_able_to :show, Question }
+    it { should_not be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
   end
   
@@ -23,28 +25,33 @@ RSpec.describe Ability, type: :model do
     let(:another_user) { create :user }
     let(:another_question) { create :question, user: another_user }
     let(:another_answer) { create :answer, user: another_user }
-    
-    it { should     be_able_to :read, :all }
-    it { should_not be_able_to :manage, :all }
 
+    it { should     be_able_to :index, Question }
+    it { should     be_able_to :show, Question }
+    it { should     be_able_to :new, Question }
     it { should     be_able_to :create, Question }
-    it { should     be_able_to :create, Answer }
-    it { should     be_able_to :create, Comment }
-    
+    it { should     be_able_to :comment, Question }
     it { should     be_able_to :update, question }
     it { should_not be_able_to :update, another_question }
-    it { should     be_able_to :update, answer }
-    it { should_not be_able_to :update, another_answer }
-    
     it { should     be_able_to :destroy, question }
     it { should_not be_able_to :destroy, another_question }
+    it { should     be_able_to :like, another_question }
+    it { should_not be_able_to :like, question }
+    it { should     be_able_to :dislike, another_question }
+    it { should_not be_able_to :dislike, question }
+
+    it { should     be_able_to :create, Answer }
+    it { should     be_able_to :comment, Answer }
+    it { should     be_able_to :update, answer }
+    it { should_not be_able_to :update, another_answer }
     it { should     be_able_to :destroy, answer }
     it { should_not be_able_to :destroy, another_answer }
-
+    it { should     be_able_to :like, another_answer }
+    it { should_not be_able_to :like, answer }
+    it { should     be_able_to :dislike, another_answer }
+    it { should_not be_able_to :dislike, answer }
     it { should     be_able_to :best_mark, create(:answer, question: question) }
     it { should_not be_able_to :best_mark, create(:answer, question: another_question) }
-
-    it { should     be_able_to :rewards, User }
 
     it { should     be_able_to :destroy, create(:link, linkable: create(:question, user: user) ) }
     it { should_not be_able_to :destroy, create(:link, linkable: create(:question, user: another_user) ) }
@@ -56,18 +63,13 @@ RSpec.describe Ability, type: :model do
     it { should     be_able_to :destroy, create(:answer, :with_attached_file, user: user).files.first }
     it { should_not be_able_to :destroy, create(:answer, :with_attached_file, user: another_user).files.first }
 
-    it { should     be_able_to :comment, Question }
-    it { should     be_able_to :comment, Answer }
-
     it { should     be_able_to :destroy, create(:comment, commentable: question, user: user) }
     it { should_not be_able_to :destroy, create(:comment, commentable: question, user: another_user) }
-
     it { should     be_able_to :destroy, create(:comment, commentable: answer, user: user) }
     it { should_not be_able_to :destroy, create(:comment, commentable: answer, user: another_user) }
 
-    it { should     be_able_to :like, another_question }
-    it { should_not be_able_to :like, question }
-    it { should     be_able_to :dislike, another_answer }
-    it { should_not be_able_to :dislike, answer }
+    it { should     be_able_to :rewards, User }
+    it { should     be_able_to :me, User }
+    it { should     be_able_to :all_others, User }
   end
 end
