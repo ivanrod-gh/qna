@@ -15,4 +15,14 @@ class Answer < ApplicationRecord
   default_scope { order(id: :asc) }
 
   validates :body, presence: true
+
+  after_create :send_notification
+
+  private
+
+  def send_notification
+    Subscription.where(question: question).find_each(batch_size: 500) do |subscription|
+      SubscriptionJob.perform_later(subscription.user, question) if question.answers.last.user != subscription.user
+    end
+  end
 end

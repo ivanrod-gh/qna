@@ -1,0 +1,6 @@
+- if @questions.present?
+  h2 New questions asked in the last 24 hours:
+  - @questions.each do |question|
+    p = link_to question.title.truncate(100), url_for(question), method: :get
+- else
+  h2 Where is no new question in the last 24 hours

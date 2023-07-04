@@ -1,0 +1,8 @@
+- if @questions.present?
+  ' New questions asked in the last 24 hours:
+  - @questions.each do |question|
+    = "\r\n" * 2
+    ' #{question.title.truncate(100)}: #{url_for(question)}
+- else
+  = "\r\n" * 2
+  ' Where is no new question in the last 24 hours

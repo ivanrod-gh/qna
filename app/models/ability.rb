@@ -18,7 +18,7 @@ class Ability
   end
 
   def user_abilities(user)
-    can %i[index show new create comment], Question
+    can %i[index show new create comment subscription], Question
     can %i[update destroy], Question, user_id: user.id
     can %i[like dislike], Question do |votable|
       votable.user.id != user.id

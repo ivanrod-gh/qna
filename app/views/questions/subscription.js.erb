@@ -1,0 +1,5 @@
+<% if @subscription.present? %>
+  $('.subscription-link').text('Subscribe to the Question')
+<% else %>
+  $('.subscription-link').text('Unsubscribe from the Question')
+<% end %>
