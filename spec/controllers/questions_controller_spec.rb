@@ -63,6 +63,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect{ post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
+      it 'creates subscription to created question' do
+        expect{ post :create, params: { question: attributes_for(:question) } }.to change(Subscription, :count).by(1)
+      end
+
       it 'redirect to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:question)
@@ -159,4 +163,22 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #subscription' do
+    before { login(user) }
+
+    describe 'unsubscribed' do
+      it 'creates subscription in the database' do
+        expect { post :subscription, params: { id: question }, format: :js }.to change(Subscription, :count).by(1)
+      end
+    end
+
+    describe 'subscribed' do
+      before { create(:subscription, user: user, question: question) }
+      it 'deletes subscription from the database if it already exists' do
+        expect { post :subscription, params: { id: question }, format: :js }.to change(Subscription, :count).by(-1)
+      end
+    end
+  end
 end
+

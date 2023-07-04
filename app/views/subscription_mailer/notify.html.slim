@@ -1,0 +1,3 @@
+h2 = "Your subscibed question (#{@question.title.truncate(100)}) has new answer:"
+h3 = @question.answers.last.body.truncate(100)
+p = link_to 'Watch the Question', url_for(@question), method: :get

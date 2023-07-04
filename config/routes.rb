@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
   root 'questions#index'
@@ -23,6 +25,7 @@ Rails.application.routes.draw do
       post :like, defaults: { table: 'questions'}
       post :dislike, defaults: { table: 'questions'}
       post :comment, defaults: { table: 'questions'}
+      post :subscription
     end
   end
 
@@ -46,4 +49,7 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

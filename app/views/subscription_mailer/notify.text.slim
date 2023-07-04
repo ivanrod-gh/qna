@@ -1,0 +1,5 @@
+' Your subscibed question (#{@question.title.truncate(100)}) has new answer:
+= "\r\n" * 2
+' #{@question.answers.last.body.truncate(100)}
+= "\r\n" * 2
+' Watch the Question: #{url_for(@question)}

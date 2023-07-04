@@ -39,6 +39,7 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :like, question }
     it { should     be_able_to :dislike, another_question }
     it { should_not be_able_to :dislike, question }
+    it { should     be_able_to :subscription, question }
 
     it { should     be_able_to :create, Answer }
     it { should     be_able_to :comment, Answer }

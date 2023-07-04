@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   include Voted
   include Commented
 
-  before_action :find_question, only: %i[show update destroy]
+  before_action :find_question, only: %i[show update destroy subscription]
   after_action :publish_question, only: :create
 
   def index
@@ -30,6 +30,7 @@ class QuestionsController < ApplicationController
     authorize! :create, Question
     @question = current_user.questions.new(question_params)
     if @question.save
+      current_user.subscriptions.create(question: @question)
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
@@ -45,6 +46,16 @@ class QuestionsController < ApplicationController
     authorize! :destroy, @question
     @question.destroy
     redirect_to root_path
+  end
+
+  def subscription
+    authorize! :subscription, Question
+    @subscription = current_user.subscriptions.where(question: @question).first
+    if @subscription.present?
+      Subscription.find_by(id: @subscription.id).destroy
+    else
+      current_user.subscriptions.create(question: @question)
+    end
   end
 
   private
