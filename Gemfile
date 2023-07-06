@@ -52,9 +52,9 @@ gem 'doorkeeper', '~> 5.6.6'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'oj'
 # Adapter sidekiq for ActiveJob
-gem 'sidekiq', '~> 4.0.0'
+gem 'sidekiq', '~> 7.0.0'
 # Web-interface for sidekiq
-gem 'sinatra', '~> 2.0.0', require: false
+gem 'sinatra', '~> 3.0.0', require: false
 # Crone helper
 gem 'whenever', require: false
 
