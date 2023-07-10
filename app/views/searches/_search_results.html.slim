@@ -1,0 +1,33 @@
+div[class="search-results"]
+  - if restricted_chars.size > 0
+    p= "Restricted char(s) found: '#{restricted_chars}'"
+  - elsif keyword.size < 3 || (author.present? && author.size < 3)
+    ' Minimum search queue: 3 symbols
+  - elsif result.size > 0
+    - result.each_with_index do |result, index|
+      hr
+      = "#{index + 1}. "
+      - if result.class == Question
+        = link_to Question, question_path(result), method: :get
+        h3= result.title.truncate(100)
+        p= result.body.truncate(100)
+        p= "By: #{result.user.email}"
+      - elsif result.class == Answer
+        = link_to Answer, question_path(result.question), method: :get
+        p= result.body.truncate(100)
+        p= "By: #{result.user.email}"
+      - elsif result.class == User
+        = "User"
+        p= "Email: #{result.email.truncate(100)}"
+        - if @author.present?
+          span[style="color: red;"]
+            ' Author search was ignored - Users must be searched by 'To find' field
+      - elsif result.class == Comment
+        - if result.commentable_type == 'Question'
+          = link_to Comment, question_path(result.commentable), method: :get
+        - else
+          = link_to Comment, question_path(result.commentable.question), method: :get
+        p= result.body.truncate(100)
+        p= "By: #{result.user.email}"
+  - else
+    ' No result's found

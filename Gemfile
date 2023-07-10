@@ -57,6 +57,9 @@ gem 'sidekiq', '~> 7.0.0'
 gem 'sinatra', '~> 3.0.0', require: false
 # Crone helper
 gem 'whenever', require: false
+# Full-text search
+gem 'mysql2', '~> 0.4.0'
+gem 'thinking-sphinx', '~> 5.5.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -89,6 +92,8 @@ group :test do
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'rails-controller-testing'
+  # Full-text search DB cleaner
+  gem 'database_cleaner-active_record', '~> 2.1.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
