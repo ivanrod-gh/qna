@@ -48,6 +48,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'searches/index'
+  post 'searches/search'
+
   mount ActionCable.server => '/cable'
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

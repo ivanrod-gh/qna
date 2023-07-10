@@ -43,3 +43,7 @@ config/database.yml
 
 # Ignore redis dump file
 dump.rdb
+
+# Ignore sphinx db and secret files
+config/*.sphinx.conf
+db/sphinx
