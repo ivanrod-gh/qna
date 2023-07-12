@@ -1,1 +1,1 @@
-$('.search-results').replaceWith('<%= j render 'search_results', result: @result, keyword: @keyword, author: @author, restricted_chars: @restricted_chars %>')
+$('.search-results').replaceWith('<%= j render 'search_results', result: @result, author: @author, restricted_chars: @restricted_chars, queries_minimum_size: @queries_minimum_size %>')

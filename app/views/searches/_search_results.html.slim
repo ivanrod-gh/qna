@@ -1,9 +1,9 @@
 div[class="search-results"]
-  - if restricted_chars.size > 0
+  - if restricted_chars.present?
     p= "Restricted char(s) found: '#{restricted_chars}'"
-  - elsif keyword.size < 3 || (author.present? && author.size < 3)
+  - elsif !queries_minimum_size
     ' Minimum search queue: 3 symbols
-  - elsif result.size > 0
+  - elsif result.present?
     - result.each_with_index do |result, index|
       hr
       = "#{index + 1}. "

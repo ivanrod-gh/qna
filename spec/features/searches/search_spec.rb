@@ -12,7 +12,7 @@ feature 'User can search for questions, answers, comments and another users', %q
   given(:answer) { create(:answer, body: 'answer with some_query string in body') }
   given(:comment) { create(:comment, body: 'comment with some_query string in body') }
 
-  describe "Any user searches for the question in questions titles" , sphinx: true, js: true do
+  describe "Any user searches for the question in questions titles", sphinx: true, js: true do
     scenario 'without specific author' do
       question
       visit searches_index_path
@@ -80,7 +80,7 @@ feature 'User can search for questions, answers, comments and another users', %q
       end
     end
 
-    scenario 'with not enough characters in title' do
+    scenario 'with too small title query' do
       question
       visit searches_index_path
 
@@ -96,7 +96,7 @@ feature 'User can search for questions, answers, comments and another users', %q
       end
     end
 
-    scenario 'with not enough characters in user' do
+    scenario 'with too small author query' do
       question
       visit searches_index_path
 
@@ -166,20 +166,42 @@ feature 'User can search for questions, answers, comments and another users', %q
     end
   end
 
-  scenario "Any user searches for another user" , sphinx: true, js: true do
-    user
-    visit searches_index_path
+  describe "Any user searches for another user" , sphinx: true, js: true do
+    scenario 'without author field' do
+      user
+      visit searches_index_path
 
-    ThinkingSphinx::Test.run do
-      uncheck 'Questions'
-      check 'Users'
-      fill_in 'query', with: 'some_user'
-      click_on 'Find'
+      ThinkingSphinx::Test.run do
+        uncheck 'Questions'
+        check 'Users'
+        fill_in 'query', with: 'some_user'
+        click_on 'Find'
 
-      within '.search-results' do
-        wait_for_ajax
-        expect(page).to have_content 'User'
-        expect(page).to have_content 'some_user'
+        within '.search-results' do
+          wait_for_ajax
+          expect(page).to have_content 'User'
+          expect(page).to have_content 'some_user'
+        end
+      end
+    end
+
+    scenario 'with author field and warning message' do
+      user
+      visit searches_index_path
+
+      ThinkingSphinx::Test.run do
+        uncheck 'Questions'
+        check 'Users'
+        fill_in 'query', with: 'some_user'
+        fill_in 'author', with: 'author_string'
+        click_on 'Find'
+
+        within '.search-results' do
+          wait_for_ajax
+          expect(page).to have_content 'User'
+          expect(page).to have_content 'some_user'
+          expect(page).to have_content 'Author search was ignored'
+        end
       end
     end
   end
