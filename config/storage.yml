@@ -8,9 +8,9 @@ local:
 
 yandex:
   service: S3
-  access_key_id: <%= ENV.fetch('YANDEX_CLOUD_STORAGE_ID') %>
-  secret_access_key: <%= ENV.fetch('YANDEX_CLOUD_STORAGE_SECRET_KEY') %>
-  bucket: <%= ENV.fetch('YANDEX_CLOUD_STORAGE_BUCKET') %>
+  access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:yandex][:storage][:id] %>
+  secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:yandex][:storage][:secret] %>
+  bucket: <%= Rails.application.credentials[Rails.env.to_sym][:yandex][:storage][:bucket] %>
   region: ru-central1
   endpoint: 'https://storage.yandexcloud.net'
   force_path_style: true
