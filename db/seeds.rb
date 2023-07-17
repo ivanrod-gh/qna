@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-user1 = User.create!(email: 'some0@mail.net', password: '123456')
-user2 = User.create!(email: 'some1@mail.net', password: '123456')
+user1 = User.create!(email: 'some0@mail.nett', password: '123456')
+user2 = User.create!(email: 'some1@mail.nett', password: '123456')
 user1.questions.create!(title: 't1', body: 'b1')
 user1.questions.create!(title: 't2', body: 'b2')
 user1.questions.create!(title: 't3', body: 'b3')

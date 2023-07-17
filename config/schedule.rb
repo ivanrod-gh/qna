@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 
 every 1.day do      # также можно 1.day, at: и указать время, по умолчанию - полночь
-  runner "DailyDijestJob.perform_now"
+  runner "DailyDigestJob.perform_now"
 end
 
 every 30.minutes do
