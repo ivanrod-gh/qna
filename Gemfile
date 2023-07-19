@@ -60,6 +60,8 @@ gem 'mysql2', '~> 0.4.0'
 gem 'thinking-sphinx', '~> 5.5.0'
 # Generate test data
 gem 'faker', '~> 3.1.0'
+# Unicorn application server
+gem 'unicorn', '~> 6.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -84,6 +86,7 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.2.0', require: false
   gem 'capistrano-passenger', '~> 0.2.1', require: false
   gem 'capistrano-sidekiq', '~> 2.3.0', require: false
+  gem 'capistrano3-unicorn', '~> 0.2.1', require: false
 end
 
 group :test do
