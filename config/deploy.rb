@@ -13,6 +13,17 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
 
 after 'deploy:publishing', 'unicorn:restart'
 
+after :deploy, "deploy:sidekiq_restart"
+
+namespace :deploy do
+  desc 'Sidekiq restart'
+  task :sidekiq_restart do
+    on roles(:app) do
+      execute :sudo, :systemctl, :restart, :sidekiq
+    end
+  end
+end
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 

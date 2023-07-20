@@ -85,7 +85,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.6.0', require: false
   gem 'capistrano-rbenv', '~> 2.2.0', require: false
   gem 'capistrano-passenger', '~> 0.2.1', require: false
-  gem 'capistrano-sidekiq', '~> 2.3.0', require: false
+  # gem 'capistrano-sidekiq', '~> 2.3.0', require: false
   gem 'capistrano3-unicorn', '~> 0.2.1', require: false
 end
 
