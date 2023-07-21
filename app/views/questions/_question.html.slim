@@ -56,5 +56,5 @@ div[id="questions-#{@question.id}"]
   - if can?(:subscription, Question) && current_user.subscribed?(@question)
     p = link_to 'Unsubscribe from the Question', subscription_question_path(@question), class: "subscription-link", method: :post, remote: true
   - elsif can?(:subscription, Question)
-    p = link_to 'Subscribe to the Question', subscription_question_path(@question), class: "subscription-link",method: :post, remote: true
+    p = link_to 'Subscribe to the Question', subscription_question_path(@question), class: "subscription-link", method: :post, remote: true
   = render 'shared/comments', resource: @question

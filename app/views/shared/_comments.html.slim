@@ -1,23 +1,25 @@
 div.comments
   div.list
     - resource.comments.each do |comment|
-      div[class="comments-#{comment.id}"]
-        div
-          = comment.body
-        div
-          |By: 
-          = comment.user.email
-          - if can?(:destroy, comment)
-            |  
-            = link_to 'X', comment_path(comment), method: :delete, remote: true, data: { type: :json }
-        br
+      - cache comment do
+        div[class="comments-#{comment.id}"]
+          div
+            = comment.body
+          div
+            |By: 
+            = comment.user.email
+            - if can?(:destroy, comment)
+              |  
+              = link_to 'X', comment_path(comment), method: :delete, remote: true, data: { type: :json }
+          br
   div.errors
   div.new
     - if current_user
-      = form_with model: [resource, @comment], url: eval("Rails.application.routes.url_helpers.comment_#{resource.class.name.underscore}_path(#{resource.id})"), local: false, data: { type: :json } do |f|
-        div
-          = f.label :body, 'Add comment'
-          br
-          = f.text_area :body, cols: 45, rows: 1
-        div
-          = f.submit 'Comment'
+      - cache ['new-comment-form', resource] do
+        = form_with model: [resource, @comment], url: eval("Rails.application.routes.url_helpers.comment_#{resource.class.name.underscore}_path(#{resource.id})"), local: false, data: { type: :json } do |f|
+          div
+            = f.label :body, 'Add comment'
+            br
+            = f.text_area :body, cols: 45, rows: 1
+          div
+            = f.submit 'Comment'

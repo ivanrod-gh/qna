@@ -1,53 +1,52 @@
 div[id="answers-#{answer.id}"]
-  hr
-  p = answer.body
-  - if answer.links.present?
-    - answer.links.each do |link|
-      div[id="link-#{link.id}"]
-        p
-          = link_to link.name, link.url
-          - if can?(:destroy, link)
-            |  
-            = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
-        - if link.gist?
-          p = link_to 'Show gist content (simplified)', '#', class: "show-gist-content", data: { gist_id: link.gist_id, link_id: link.id }
-          div[id="link-#{link.id}-gist-content"]
-  - if answer.files.attached?
-    - answer.files.each do |file|
-      div[id="attachment-#{file.id}"]
-        p
-          = link_to file.filename.to_s, url_for(file)
-          - if can?(:destroy, file)
-            |  
-            = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
-  = render 'shared/vote', resource: answer, table: 'answers'
-  p
-    | By: 
-    = answer.user.email
-    div[id="answer-best-#{answer.id}"]
-      = render 'answers/best', answer: answer
-  - if can?(:update, answer)
-    p = link_to 'Edit an Answer', '#', class: "edit-answer-link", data: { answer_id: answer.id }
-    p = link_to 'Delete an Answer', answer_path(answer), method: :delete, remote: true
-    div[id="answer-errors-#{answer.id}"]
-    = form_with model: answer, class: "hide", id: "edit-answer-#{answer.id}", local: false do |f|
-      div
-        = f.label :body, 'Edit your answer'
-        br
-        = f.text_area :body, cols: 45, rows: 1
-      div
-        = f.label :files
-        br
-        = f.file_field :files, multiple: true, direct_upload: true
-      p Links:
-      p
-        = f.fields_for :links do |link|
-          = render 'questions/link_fields', f: link
+  - cache answer do
+    hr
+    p = answer.body
+    - if answer.links.present?
+      - answer.links.each do |link|
+        div[id="link-#{link.id}"]
+          p
+            = link_to link.name, link.url
+            - if can?(:destroy, link)
+              |  
+              = link_to octicon('x-circle'), link_path(link), method: :delete, remote: true
+          - if link.gist?
+            p = link_to 'Show gist content (simplified)', '#', class: "show-gist-content", data: { gist_id: link.gist_id, link_id: link.id }
+            div[id="link-#{link.id}-gist-content"]
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        div[id="attachment-#{file.id}"]
+          p
+            = link_to file.filename.to_s, url_for(file)
+            - if can?(:destroy, file)
+              |  
+              = link_to octicon('x-circle'), attachment_path(file), method: :delete, remote: true
+    = render 'shared/vote', resource: answer, table: 'answers'
+    p
+      | By: 
+      = answer.user.email
+      div[id="answer-best-#{answer.id}"]
+        = render 'answers/best', answer: answer
+    - if can?(:update, answer)
+      p = link_to 'Edit an Answer', '#', class: "edit-answer-link", data: { answer_id: answer.id }
+      p = link_to 'Delete an Answer', answer_path(answer), method: :delete, remote: true
+      div[id="answer-errors-#{answer.id}"]
+      = form_with model: answer, class: "hide", id: "edit-answer-#{answer.id}", local: false do |f|
         div
-          = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
-      div
-        br
-        = f.submit 'Save'
-  = render 'shared/comments', resource: answer
-
-
+          = f.label :body, 'Edit your answer'
+          br
+          = f.text_area :body, cols: 45, rows: 1
+        div
+          = f.label :files
+          br
+          = f.file_field :files, multiple: true, direct_upload: true
+        p Links:
+        p
+          = f.fields_for :links do |link|
+            = render 'questions/link_fields', f: link
+          div
+            = link_to_add_association 'add link', f, :links, partial: 'questions/link_fields'
+        div
+          br
+          = f.submit 'Save'
+    = render 'shared/comments', resource: answer
