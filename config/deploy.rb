@@ -7,6 +7,7 @@ set :repo_url, "git@github.com:ivanrod-gh/qna.git"
 set :deploy_to, "/home/deploy/qna/"
 set :deploy_user, 'deploy'
 set :pty, false
+set :branch, ENV['BRANCH'] if ENV['BRANCH']
 
 append :linked_files, "config/database.yml", 'config/master.key'
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
